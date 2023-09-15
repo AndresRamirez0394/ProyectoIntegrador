@@ -56,7 +56,7 @@ export function Signup() {
         e.preventDefault();
         
         try {
-          const response = await fetch('/api/signup/', {
+          const response = await fetch('/proyectointegrador/signup', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export function Signup() {
             });
 
             if(response.ok) {
-              console.print("SUCCESS!")
+              console.log("SUCCESS!")
             } else {
               console.error('Registration failed');
             }

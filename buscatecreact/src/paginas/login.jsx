@@ -25,7 +25,6 @@ export function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Send a POST request to your Django backend to authenticate the user
     try {
       const response = await fetch('/api/login/', {
         method: 'POST',
