@@ -6,7 +6,7 @@ function App(){
   return (
     <div className='landing-page'>
       <h1>buscaTEC</h1>
-      <img src="TECNEXUS.jpeg" alt="App Logo" />
+      <img src={require('./images/TECNEXUS.jpeg')} alt="App Logo" />
 
       <div className='buttons-container'>
         <Link to="/signup" className='btn btn-primary'>
