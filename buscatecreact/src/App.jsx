@@ -1,15 +1,22 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import { Login } from './paginas/login';
-import { Signup } from './paginas/signup';
+import React from 'react';
+import { Link } from 'react-router-dom'
+import './App.css'
 
 function App(){
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element = {<Login />} />
-        <Route path="/signup" element = {<Signup />} />
-      </Routes>
-    </BrowserRouter>
+    <div className='landing-page'>
+      <h1>buscaTEC</h1>
+      <img src="TECNEXUS.jpeg" alt="App Logo" />
+
+      <div className='buttons-container'>
+        <Link to="/signup" className='btn btn-primary'>
+          Sign Up
+        </Link>
+        <Link to="/login" className='btn btn-secondary'>
+          Login
+        </Link>
+      </div>
+    </div>
   );
 }
 
