@@ -30,7 +30,7 @@ export function Signup() {
         career: [],
     });
 
-    const handleInputChange = (e) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
       };
@@ -52,91 +52,69 @@ export function Signup() {
       };
     
     
-      const handleSubmit = (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('User Signup Data:', formData);
+        
+        try {
+          const response = await fetch('/api/signup/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+            });
+
+            if(response.ok) {
+              console.print("SUCCESS!")
+            } else {
+              console.error('Registration failed');
+            }
+        } catch (error) {
+          console.error('ERROR:', error);
+        }
       };
 
       return (
-        <div className="signup-container">
-          <h2>Sign Up</h2>
+        <div>
+          <h2>Register</h2>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="firstName">First Name:</label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="lastName">Last Name:</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="interests">Main Interests:</label>
-              <select
-                id="interests"
-                name="interests"
-                multiple
-                value={formData.interests}
-                onChange={handleInterestChange}
-              >
-                {interestPool.map((interest) => (
-                  <option key={interest} value={interest}>
-                    {interest}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="carreers">Career:</label>
-              <select
-                id="carreer"
-                name="carreer"
-                multiple
-                value={formData.career}
-                onChange={handleCareerChange}
-              >
-                {careerPool.map((career) => (
-                  <option key={career} value={career}>
-                    {career}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button type="submit">Sign Up</button>
+            {/* First Name */}
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="First Name"
+            />
+            {/* Last Name */}
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Last Name"
+            />
+            {/* Email */}
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+            />
+            {/* Password */}
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+            />
+            {/* Submit Button */}
+            <button type="submit">Register</button>
           </form>
         </div>
       );
     }
-
+    
     export default Signup;
