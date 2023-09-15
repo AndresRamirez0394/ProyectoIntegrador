@@ -1,4 +1,6 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import './feed.css';
 
 class Home extends React.Component {
@@ -7,9 +9,9 @@ class Home extends React.Component {
    
     return (
      
-        <div className="maincontainer">
+        <div >
         <div class="container">
-                    <div class="row">
+                    <div class="main">
                         <div class="col-12 col-lg-4 col-xl-3 order-2 order-lg-1">
                             <div class="card mb-3">
                                 <div class="card-body text-center">
