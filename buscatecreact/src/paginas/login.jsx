@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
+import Signup from './signup';
+import SignInForm from './signin';
+import './login.css';
 
 export function Login() {
+  const [type, setType] = useState("signIn");
+  const handleOnClick = text => {
+    if (text !== type) {
+      setType(text);
+      return;
+    }
+  };
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -34,30 +45,43 @@ export function Login() {
       console.error('Error:', error);
     }
   };
-
+  const containerClass =
+  "container " + (type === "signUp" ? "right-panel-active" : "");
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        {/* Email */}
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email"
-        />
-        {/* Password */}
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder="Password"
-        />
-        {/* Submit Button */}
-        <button type="submit">Login</button>
-      </form>
+    <div className="App">
+      <h2>TecNexus</h2>
+      <div className={containerClass} id="container">
+        <Signup />
+        <SignInForm/>
+        <div className="overlay-container">
+          <div className="overlay">
+            <div className="overlay-panel overlay-left">
+              <h1>Welcome Back!</h1>
+              <p>
+                To keep connected with us please login with your Tec Account
+              </p>
+              <button
+                className="ghost"
+                id="signIn"
+                onClick={() => handleOnClick("signIn")}
+              >
+                Sign In
+              </button>
+            </div>
+            <div className="overlay-panel overlay-right">
+              <h1>Welcome, Tec Student!</h1>
+              <p>Enter your personal details and start journey with us</p>
+              <button
+                className="ghost "
+                id="signUp"
+                onClick={() => handleOnClick("signUp")}
+              >
+                Sign Up
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

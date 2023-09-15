@@ -75,9 +75,10 @@ export function Signup() {
       };
 
       return (
-        <div>
-          <h2>Register</h2>
-          <form onSubmit={handleSubmit}>
+        <div className="form-container sign-up-container">
+           <h1 style={{paddingTop: '1em'}}>Create Account</h1>
+        <span>or use your email for registration</span>
+          <form style={{marginTop: '-100px'}} onSubmit={handleSubmit}>
             {/* First Name */}
             <input
               type="text"
@@ -111,7 +112,7 @@ export function Signup() {
               placeholder="Password"
             />
             {/* Submit Button */}
-            <button type="submit">Register</button>
+            <button>Register</button>
           </form>
         </div>
       );
