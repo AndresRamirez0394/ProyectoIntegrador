@@ -2,21 +2,27 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import './feed.css';
+import OffcanvasExample from '../../components/navbar/navbar';
 
 class Home extends React.Component {
 
   render() {
    
     return (
-     
-        <div >
-        <div class="container">
+        
+        <div  >
+        
+        <div style={{backgroundColor: 'black'}} class="container">
+            <div style = {{height: "20%"}}>
+            <OffcanvasExample/>
+            </div>
+            
                     <div class="main">
                         <div class="col-12 col-lg-4 col-xl-3 order-2 order-lg-1">
                             <div class="card mb-3">
                                 <div class="card-body text-center">
                                     <img src="https://therichpost.com/wp-content/uploads/2021/03/avatar3.png" alt="Jassa Jas" class="img-fluid rounded-circle mb-2" width="128" height="128" />
-                                    <h4 class="card-title mb-0">Jassa Jas</h4>
+                                    <h4 class="card-title mb-0">Josefa</h4>
                                     <div class="text-muted mb-2">Front-end Developer</div>
 
                                     <div>
@@ -55,17 +61,17 @@ class Home extends React.Component {
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home feather-sm mr-1">
                                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                            </svg> Lives in <a href="#">San Francisco, SA</a></li>
+                                            </svg> Lives in <a href="#">Monterrey, N.L</a></li>
                                         <li class="mb-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase feather-sm mr-1">
                                                 <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                                                 <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                                            </svg> Works at <a href="#">GitHub</a></li>
+                                            </svg> Works at <a href="#">COMEX</a></li>
                                         <li class="mb-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin feather-sm mr-1">
                                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                                 <circle cx="12" cy="10" r="3"></circle>
-                                            </svg> From <a href="#">Boston</a></li>
+                                            </svg> From <a href="#">Guadalajara</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -96,7 +102,7 @@ class Home extends React.Component {
                                     <div class="media">
                                         <img src="https://therichpost.com/wp-content/uploads/2021/03/avatar3.png" width="56" height="56" class="rounded-circle mr-2" alt="Andrew Jones" />
                                         <div class="media-body">
-                                            <p class="my-1"><strong>Andrew Jones</strong></p>
+                                            <p class="my-1"><strong> Andrew Jones</strong></p>
                                             <a class="btn btn-sm btn-outline-primary" href="#">Unfollow</a>
                                         </div>
                                     </div>
@@ -133,9 +139,8 @@ class Home extends React.Component {
                                         <img src="https://therichpost.com/wp-content/uploads/2021/03/avatar3.png" width="56" height="56" class="rounded-circle mr-3" alt="Jassa Jas" />
                                         <div class="media-body">
                                             <small class="float-right text-navy">5m ago</small>
-                                            <p class="mb-2"><strong>Jassa Jas</strong></p>
-                                            <p>Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.</p>
-
+                                            <p class="mb-2"><strong>Josefa</strong></p>
+                                            <p>Nuevo proyecto en progreso, me he aliado con el equipo X para poder crear un nuevo emprendimiento en el area de Y.</p>
                                             <div class="row no-gutters mt-1">
                                                 <div class="col-6">
                                                     <img src="https://therichpost.com/wp-content/uploads/2021/03/avatar2.png" class="img-fluid pr-1" alt="Unsplash" />
@@ -158,7 +163,7 @@ class Home extends React.Component {
                                                 </a>
                                                 <div class="media-body">
                                                     <p class="text-muted">
-                                                        <strong>Marie Salter</strong>: Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris.
+                                                        <strong>Marie Salter</strong>: Felicidades, espero poder colaborar con ustedes en el futuro.
                                                     </p>
                                                 </div>
                                             </div>
@@ -262,7 +267,7 @@ class Home extends React.Component {
                                         <img src="https://therichpost.com/wp-content/uploads/2021/03/avatar3.png" width="36" height="36" class="rounded-circle mr-2" alt="Jassa Jas" />
                                         <div class="media-body">
                                             <small class="float-right text-navy">5m ago</small>
-                                            <strong>Jassa Jas</strong> started following <strong>Marie Salter</strong>
+                                            <strong> Josefa</strong> started following <strong>Marie Salter</strong>
                                             <br />
                                             <small class="text-muted">Today 7:51 pm</small>
                                             <br />

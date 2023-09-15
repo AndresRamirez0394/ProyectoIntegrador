@@ -1,5 +1,5 @@
 import React from "react";
-<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"></link>
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function SignInForm() {
   const [state, setState] = React.useState({
@@ -34,18 +34,18 @@ function SignInForm() {
         <h1>Sign in</h1>
         <div className="social-container">
           <a href="#" className="social">
-          <i class="fa fa-google-plus" aria-hidden="true"></i>
+            <i class="fa fa-google-plus" aria-hidden="true"></i>
           </a>
         </div>
         <span>or use your account</span>
-        <input
+        <input className='input'
           type="email"
           placeholder="Email"
           name="email"
           value={state.email}
           onChange={handleChange}
         />
-        <input
+        <input className='input'
           type="password"
           name="password"
           placeholder="Password"
@@ -53,7 +53,7 @@ function SignInForm() {
           onChange={handleChange}
         />
         <a href="#">Forgot your password?</a>
-        <button>Sign In</button>
+        <button style={{borderRadius: "20px"}} >Sign In</button>
       </form>
     </div>
   );

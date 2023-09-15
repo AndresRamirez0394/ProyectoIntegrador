@@ -77,10 +77,10 @@ export function Signup() {
       return (
         <div className="form-container sign-up-container">
            <h1 style={{paddingTop: '1em'}}>Create Account</h1>
-        <span>or use your email for registration</span>
+        
           <form style={{marginTop: '-100px'}} onSubmit={handleSubmit}>
             {/* First Name */}
-            <input
+            <input className='input'
               type="text"
               name="firstName"
               value={formData.firstName}
@@ -88,7 +88,7 @@ export function Signup() {
               placeholder="First Name"
             />
             {/* Last Name */}
-            <input
+            <input className='input'
               type="text"
               name="lastName"
               value={formData.lastName}
@@ -96,7 +96,7 @@ export function Signup() {
               placeholder="Last Name"
             />
             {/* Email */}
-            <input
+            <input className='input'
               type="email"
               name="email"
               value={formData.email}
@@ -104,7 +104,7 @@ export function Signup() {
               placeholder="Email"
             />
             {/* Password */}
-            <input
+            <input className='input'
               type="password"
               name="password"
               value={formData.password}
@@ -112,7 +112,7 @@ export function Signup() {
               placeholder="Password"
             />
             {/* Submit Button */}
-            <button>Register</button>
+            <button style={{borderRadius: "20px"}}>Register</button>
           </form>
         </div>
       );
