@@ -1,14 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom'
-import './App.css'
-import Login from './paginas/login';
+import Sidebar from "./components/Sidebar";
+import Feed from "./components/Feed";
+import Rightbar from "./components/Rightbar";
+import { Box, createTheme, Stack, ThemeProvider } from "@mui/material";
+import Navbar from "./components/Navbar";
+import Add from "./components/Add";
+import { useState } from "react";
 
-function App(){
+function App() {
+  const [mode, setMode] = useState("light");
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
   return (
-    
-    <div className='landing-page'>
-      <Login/>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <Box bgcolor={"background.default"} color={"text.primary"}>
+        <Navbar />
+        <Stack direction="row" spacing={2} justifyContent="space-between">
+        <Sidebar setMode={setMode} mode={mode}/>
+          <Feed />
+          <Rightbar />
+        </Stack>
+        <Add />
+      </Box>
+    </ThemeProvider>
   );
 }
 
