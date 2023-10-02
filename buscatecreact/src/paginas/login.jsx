@@ -47,7 +47,7 @@ export function Login() {
   const containerClass =
   "container " + (type === "signUp" ? "right-panel-active" : "");
   return (
-    <div className="App">
+    <div className="body">
       <h2>TecNexus</h2>
       <div className={containerClass} id="container">
         <Signup />
