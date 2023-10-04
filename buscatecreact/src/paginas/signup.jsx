@@ -26,8 +26,6 @@ export function Signup() {
         lastName: '',
         email: '',
         password: '',
-        interests: [],
-        career: [],
     });
 
     const handleChange = (e) => {
@@ -52,33 +50,49 @@ export function Signup() {
       };
     
     
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        
+      const handleOnSubmit = async (evt) => {
+        evt.preventDefault();
+    
+        const { firstName, lastName, email, password } = formData;
+        alert(`You are creating a user with the email: ${email}`);
+    
         try {
-          const response = await fetch('/proyectointegrador/signup', {
+          const response = await fetch('/api/register/', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData),
-            });
-
-            if(response.ok) {
-              console.log("SUCCESS!")
-            } else {
-              console.error('Registration failed');
-            }
+            body: JSON.stringify({
+              first_name: firstName,
+              last_name: lastName,
+              email,
+              password,
+            }),
+          });
+          
+          if(response.status === 201) {
+            alert('Registration succesful!');
+          } else {
+            alert('Registration failed.');
+          }
         } catch (error) {
-          console.error('ERROR:', error);
+          console.error('Error:', error);
+          alert('An error has occurred during registration, please try at a later date');
         }
+        
+       setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: ""
+       });
       };
 
       return (
         <div className="form-container sign-up-container">
            <h1 style={{paddingTop: '1em'}}>Create Account</h1>
         
-          <form style={{marginTop: '-100px'}} onSubmit={handleSubmit}>
+          <form style={{marginTop: '-100px'}} onSubmit={handleOnSubmit}>
             {/* First Name */}
             <input className='input'
               type="text"
