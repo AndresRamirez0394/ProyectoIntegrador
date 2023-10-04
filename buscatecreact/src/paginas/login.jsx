@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Signup from './signup';
 import SignInForm from './signin';
 import './login.css';
+import {useLogin} from "hooks/auth";
+import {useForm} from "react-hook-form"
 
 export function Login() {
   const [type, setType] = useState("signIn");
@@ -12,38 +14,6 @@ export function Login() {
     }
   };
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('/api/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // User authentication successful, you can redirect or manage user session
-      } else {
-        // Handle authentication error
-        console.error('Authentication failed');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
   const containerClass =
   "container " + (type === "signUp" ? "right-panel-active" : "");
   return (

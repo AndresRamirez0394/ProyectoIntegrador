@@ -1,38 +1,15 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {Link} from "react-router-dom"
-import App from '../App'
+import {useForm} from "react-hook-form"
 
 function SignInForm() {
-  const [state, setState] = React.useState({
-    email: "",
-    password: ""
-  });
-  const handleChange = evt => {
-    const value = evt.target.value;
-    setState({
-      ...state,
-      [evt.target.name]: value
-    });
-  };
+  const { login, isLoading } = useLogin();
+  const {register} = useForm();
 
-  const handleOnSubmit = evt => {
-    evt.preventDefault();
-
-    const { email, password } = state;
-    alert(`You are login with email: ${email} and password: ${password}`);
-
-    for (const key in state) {
-      setState({
-        ...state,
-        [key]: ""
-      });
-    }
-  };
 
   return (
     <div className="form-container sign-in-container">
-      <form onSubmit={handleOnSubmit}>
+      <form onSubmit={() => {}}>
         <h1>Sign in</h1>
         <div className="social-container">
           <a href="#" className="social">
@@ -42,17 +19,10 @@ function SignInForm() {
         <span>or use your account</span>
         <input className='input'
           type="email"
-          placeholder="Email"
-          name="email"
-          value={state.email}
-          onChange={handleChange}
-        />
+          placeholder="Email" {...register('email')}/>
         <input className='input'
           type="password"
-          name="password"
-          placeholder="Password"
-          value={state.password}
-          onChange={handleChange}
+          placeholder="Password" {...register('password')}
         />
         <a href="#">Forgot your password?</a>
         <button style={{borderRadius: "20px"}} >Sign In</button>
