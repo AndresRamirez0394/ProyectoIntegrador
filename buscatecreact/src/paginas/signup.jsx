@@ -57,7 +57,7 @@ export function Signup() {
         alert(`You are creating a user with the email: ${email}`);
     
         try {
-          const response = await fetch('/api/register/', {
+          const response = await fetch('signup/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
