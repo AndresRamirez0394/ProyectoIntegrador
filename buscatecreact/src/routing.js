@@ -9,7 +9,7 @@ function Main(){
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/App" element={<App />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/navbar' element={<OffcanvasExample />} />
@@ -19,3 +19,4 @@ function Main(){
 }
 
 export default Main;
+
