@@ -14,10 +14,5 @@ export const router = createBrowserRouter([
     {path: ROOT, element: "Public Root" },
     {path: LOGIN, element: <Login />},
     {path: REGISTER, element: <Signup />},
-    {path: PROTECTED, element: <App />, children: [{
-        path: FEED,
-        element: "App",
-    },
-  ],
-}
+    {path: FEED, element: <App /> },
 ])
