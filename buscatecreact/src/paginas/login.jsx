@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Signup from './signup';
 import SignInForm from './signin';
 import './login.css';
-import {useLogin} from "hooks/auth";
-import {useForm} from "react-hook-form"
+
 
 export function Login() {
   const [type, setType] = useState("signIn");

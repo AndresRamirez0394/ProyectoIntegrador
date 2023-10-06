@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import Login from "./paginas/login";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,5 +15,6 @@ root.render(
         <Route path='/login' element={<Login />} />
       </Routes>
     </BrowserRouter>
+    <ToastContainer></ToastContainer>
   </React.StrictMode>
 );

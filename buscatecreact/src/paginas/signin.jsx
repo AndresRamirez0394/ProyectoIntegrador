@@ -2,7 +2,6 @@ import React from "react";
 import {useForm} from "react-hook-form"
 import { emailValidate, passwordValidate } from "utils/form-validate";
 import {useLogin} from "../hooks/auth"
-import {App} from "../App"
 import { useNavigate } from "react-router-dom";
 
 function SignInForm() {

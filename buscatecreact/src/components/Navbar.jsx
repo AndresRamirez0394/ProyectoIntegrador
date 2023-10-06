@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import {useLogout} from "hooks/auth"
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -43,6 +44,7 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 const Navbar = () => {
+  const {logout, isLoading} = useLogout();
   const [open, setOpen] = useState(false);
   return (
     <AppBar position="sticky">
@@ -91,7 +93,7 @@ const Navbar = () => {
       >
         <MenuItem>Profile</MenuItem>
         <MenuItem>My account</MenuItem>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
     </AppBar>
   );
