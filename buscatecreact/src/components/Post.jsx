@@ -15,7 +15,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "lib/firebase";
 import { collection, orderBy, query } from "@firebase/firestore";
 import { useAuth } from "hooks/auth";
-import {formateDistanceToNow} from "date-fns/formatDistanceToNow";
+import {formatDistanceToNow} from "date-fns";
 import { useToggleLike, GetUser } from "hooks/posts";
 
 export default function Post ({post}){
@@ -43,7 +43,7 @@ export default function Post ({post}){
           </IconButton>
         }
         title= {matricula}
-        subheader = {formateDistanceToNow(date)}
+        subheader = {formatDistanceToNow(date)}
       />
 
       {{imgValue} != `""` ? <CardMedia
