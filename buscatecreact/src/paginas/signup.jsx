@@ -1,115 +1,57 @@
 import react, { useState } from 'react';
 import './signup.css';
+import { useRegister } from 'hooks/auth';
+import { useNavigate } from "react-router-dom";
+import {useForm} from "react-hook-form";
+import { toast } from 'react-toastify';
+import { emailValidate, passwordValidate } from 'utils/form-validate';
 
-const interestPool = [
-    'Sports',
-    'Music',
-    'Technology',
-    'Food',
-    'Gaming',
-    'Books',
-    'Fitness',
-];
+export default function Signupform() {
+  const { register: signup, isLoading } = useRegister();
+  const {register, handleSubmit, formState : {errors}} = useForm();
+  const navigate = useNavigate();
 
-const careerPool = [
-    'ITC',
-    'LAF',
-    'IMT',
-    'LIN',
-    'LAD',
-    'LDI',
-];
 
-export function Signup() {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        interests: [],
-        career: [],
+  async function handleRegister(data){
+    const succeeded = await signup({
+      matricula: data.matricula,
+      email: data.email,
+      password: data.password,
     });
+    if (succeeded) {
+      toast('You are now logged in', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "dark",
+        pauseOnHover: true,
+    });
+      navigate('/login')
+    }
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-      };
-    
-      const handleInterestChange = (e) => {
-        const { options } = e.target;
-        const selectedInterests = Array.from(options)
-          .filter((option) => option.selected)
-          .map((option) => option.value);
-        setFormData({ ...formData, interests: selectedInterests });
-      };
-
-      const handleCareerChange = (e) => {
-        const { options } = e.target;
-        const selectedCareer = Array.from(options)
-          .filter((option) => option.selected)
-          .map((option) => option.value);
-        setFormData({ ...formData, career: selectedCareer });
-      };
-    
-    
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        try {
-          const response = await fetch('/proyectointegrador/signup', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-            });
-
-            if(response.ok) {
-              console.log("SUCCESS!")
-            } else {
-              console.error('Registration failed');
-            }
-        } catch (error) {
-          console.error('ERROR:', error);
-        }
-      };
+  }
 
       return (
         <div className="form-container sign-up-container">
            <h1 style={{paddingTop: '1em'}}>Create Account</h1>
         
-          <form style={{marginTop: '-100px'}} onSubmit={handleSubmit}>
-            {/* First Name */}
+          <form style={{marginTop: '-100px'}} onSubmit={handleSubmit(handleRegister)}>
+            {/* Matricula */}
             <input className='input'
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              placeholder="First Name"
-            />
-            {/* Last Name */}
-            <input className='input'
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              placeholder="Last Name"
+              type="matricula"
+              placeholder="Matricula" {...register("matricula")}
             />
             {/* Email */}
             <input className='input'
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
+              placeholder="Email" {...register("email", emailValidate)}
             />
             {/* Password */}
             <input className='input'
               type="password"
               name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password"
+              placeholder="Password" {...register("password", passwordValidate)}
             />
             {/* Submit Button */}
             <button style={{borderRadius: "20px"}}>Register</button>
@@ -118,4 +60,3 @@ export function Signup() {
       );
     }
     
-    export default Signup;

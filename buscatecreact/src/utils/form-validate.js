@@ -1,3 +1,4 @@
+
 export const emailValidate = {
     required: {
         value: true,

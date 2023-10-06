@@ -4,7 +4,7 @@ import { emailValidate, passwordValidate } from "utils/form-validate";
 import {useLogin} from "../hooks/auth"
 import { useNavigate } from "react-router-dom";
 
-function SignInForm() {
+export default function SignInForm() {
   const { login, isLoading } = useLogin();
   const {register, handleSubmit, reset} = useForm();
   const navigate = useNavigate();
@@ -45,4 +45,3 @@ function SignInForm() {
   );
 }
 
-export default SignInForm;

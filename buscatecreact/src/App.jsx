@@ -5,7 +5,6 @@ import { Box, createTheme, Stack, ThemeProvider } from "@mui/material";
 import Navbar from "./components/Navbar";
 import Add from "./components/Add";
 import { useState } from "react";
-import { RouterProvider } from "react-router-dom"
 
 function App() {
   const [mode, setMode] = useState("light");

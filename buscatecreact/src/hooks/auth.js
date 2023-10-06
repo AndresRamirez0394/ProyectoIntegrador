@@ -1,11 +1,12 @@
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth'
-import {auth} from 'lib/firebase';
-import App from '../App'
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {auth, db} from 'lib/firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import {setDoc, doc} from "firebase/firestore"
+import IsmatriculaExists from 'utils/userExist';
 
 export function useAuth() {
     const [authUser, isLoading, error] = useAuthState(auth);
@@ -40,8 +41,53 @@ export function useLogin(){
 }
 
 export function useRegister(){
+    const [isLoading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    async function register({ firstName, lastName, email, password})
+    async function register({ matricula, email, password}) {
+        setLoading(true);
+
+        const matriculaExists = await IsmatriculaExists(matricula);
+
+        if (matriculaExists){
+            toast('Esta matricula ya esta registrada!', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                theme: "light",
+                pauseOnHover: true,
+            });
+            setLoading(false);
+        } else {
+            try{
+                const res = await createUserWithEmailAndPassword(auth, email, password);
+
+              await setDoc(doc(db, "users", res.user.uid), {
+                id: res.user.uid,
+                matricula: matricula.toLowerCase(),
+                date: Date.now(),
+              });
+              toast('Bienvenido a buscaTEC, ahora puedes ingresar con tu cuenta!', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                theme: "dark",
+                pauseOnHover: true,
+            });
+
+            } catch(error){
+                toast('Nuh uh!', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    theme: "dark",
+                    pauseOnHover: true,
+                });
+            } finally {
+                setLoading(false)
+            }
+        }
+    }
     return {register, isLoading};
 }
 
