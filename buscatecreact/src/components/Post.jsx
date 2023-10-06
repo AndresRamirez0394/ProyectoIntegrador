@@ -16,14 +16,19 @@ import { db } from "lib/firebase";
 import { collection, orderBy, query } from "@firebase/firestore";
 import { useAuth } from "hooks/auth";
 import formateDistanceToNow from "date-fns/formatDistanceToNow";
+import { useToggleLike, GetUser } from "hooks/posts";
 
 export default function Post ({post}){
   const {txtValue} = post;
   const {imgValue} = post;
   const {date} = post;
+  const {id, likes, owner, matricula} = post;
   const {user, isLoading} = useAuth();
+  const isLiked = likes.includes(user?.id) ? true : false;
+  const {toggleLike, isLoading: likeLoading} = useToggleLike(id, isLiked, user?.id, );
 
-  console.log(post);
+  
+
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
@@ -37,7 +42,7 @@ export default function Post ({post}){
             <MoreVert />
           </IconButton>
         }
-        title={user?.matricula}
+        title= {matricula}
         subheader = {formateDistanceToNow(date)}
       />
 
@@ -56,9 +61,12 @@ export default function Post ({post}){
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <Checkbox
-            icon={<FavoriteBorder />}
+            onClick={toggleLike}
+            icon={isLiked?<Favorite sx={{ color: "red" }} /> : <FavoriteBorder /> } 
             checkedIcon={<Favorite sx={{ color: "red" }} />}
+            
           />
+        {likes.length}
         </IconButton>
         <IconButton aria-label="share">
           <Share />

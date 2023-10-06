@@ -72,7 +72,10 @@ const Add = () => {
     setTimeout(() => {
 
     }, [2000]);
-    await setDoc(doc(db, "Post", v4()), {
+    const id = v4();
+    await setDoc(doc(db, "Post", id), {
+      id: id,
+      matricula: user?.matricula,
       owner: user?.id,
       txtValue: text,
       imgValue: image,
