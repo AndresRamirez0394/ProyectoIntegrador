@@ -10,7 +10,20 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-const Post = () => {
+import React from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { db } from "lib/firebase";
+import { collection, orderBy, query } from "@firebase/firestore";
+import { useAuth } from "hooks/auth";
+import formateDistanceToNow from "date-fns/formatDistanceToNow";
+
+export default function Post ({post}){
+  const {txtValue} = post;
+  const {imgValue} = post;
+  const {date} = post;
+  const {user, isLoading} = useAuth();
+
+  console.log(post);
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
@@ -24,20 +37,20 @@ const Post = () => {
             <MoreVert />
           </IconButton>
         }
-        title="John Doe"
-        subheader="September 14, 2022"
+        title={user?.matricula}
+        subheader = {formateDistanceToNow(date)}
       />
-      <CardMedia
+
+      {{imgValue} != `""` ? <CardMedia
         component="img"
         height="20%"
-        image="https://images.pexels.com/photos/4534200/pexels-photo-4534200.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        image={imgValue}
         alt="Paella dish"
-      />
+      />: 1} 
+      
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {txtValue}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -55,4 +68,11 @@ const Post = () => {
   );
 };
 
-export default Post;
+export function usePost(){
+  const q = query(collection(db, "Post"), orderBy("date", "desc"));
+  const [posts, isLoading, error] = useCollectionData(q);
+  
+  if (error) throw error;
+  return {posts, isLoading};
+  
+}

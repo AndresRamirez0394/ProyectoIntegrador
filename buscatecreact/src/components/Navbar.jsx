@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import {useLogout} from "hooks/auth"
+import {useAuth, useLogout} from "hooks/auth"
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -44,13 +44,17 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 const Navbar = () => {
-  const {logout, isLoading} = useLogout();
+  const {logout, isLog} = useLogout();
   const [open, setOpen] = useState(false);
+  const {user, isLoading} = useAuth();
+
+  if(isLoading) return "Loading...";
+
   return (
     <AppBar position="sticky">
       <StyledToolbar>
         <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
-          LAMA DEV
+          {user?.matricula}
         </Typography>
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
         <Search>

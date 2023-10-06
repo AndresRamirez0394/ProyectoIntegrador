@@ -10,7 +10,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
 import {
   Add as AddIcon,
   DateRange,
@@ -20,6 +19,17 @@ import {
   VideoCameraBack,
 } from "@mui/icons-material";
 import { Box } from "@mui/system";
+import { useAuth } from "hooks/auth";
+
+
+import { storage, db } from "lib/firebase";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { doc, setDoc } from "@firebase/firestore";
+import { v4 } from "uuid";
+import './add.css';	
+import { uploadBytes, ref, getDownloadURL } from "@firebase/storage";
+
 
 const SytledModal = styled(Modal)({
   display: "flex",
@@ -34,10 +44,49 @@ const UserBox = styled(Box)({
   marginBottom: "20px",
 });
 
+
+
 const Add = () => {
   const [open, setOpen] = useState(false);
+  const {user, isLoading} = useAuth();
+  const [image, setImage] = useState(""); //image state
+  const [text, setText] = useState(""); //text state
+
+  //Function to open file explorer and select image/document
+  function _upload(){
+    document.getElementById('image').click();
+  }
+
+  const handleUpload = (e) => {
+    console.log(e.target.files[0]);
+    const imgs = ref(storage, `Images/${v4()}`);
+    uploadBytes (imgs, e.target.files[0]).then((data) => {
+      console.log(data, 'imgs');
+      getDownloadURL(imgs).then((url) => {
+        setImage(url);
+      })
+    })
+  }
+
+  const handlePost = async () => {
+    setTimeout(() => {
+
+    }, [2000]);
+    await setDoc(doc(db, "Post", v4()), {
+      owner: user?.id,
+      txtValue: text,
+      imgValue: image,
+      date: Date.now(),
+      likes: [],
+    });
+    alert("Post created");
+
+  }
+
   return (
     <>
+
+
       <Tooltip
         onClick={(e) => setOpen(true)}
         title="Delete"
@@ -59,7 +108,7 @@ const Add = () => {
       >
         <Box
           width={400}
-          height={280}
+          height={300}
           bgcolor={"background.default"}
           color={"text.primary"}
           p={3}
@@ -74,9 +123,11 @@ const Add = () => {
               sx={{ width: 30, height: 30 }}
             />
             <Typography fontWeight={500} variant="span">
-              John Doe
+              {user?.matricula}
             </Typography>
           </UserBox>
+
+          
           <TextField
             sx={{ width: "100%" }}
             id="standard-multiline-static"
@@ -84,19 +135,22 @@ const Add = () => {
             rows={3}
             placeholder="What's on your mind?"
             variant="standard"
+            onChange={(e) => setText(e.target.value)}
           />
+          <input type="file"  id = "image" onChange={(e) => handleUpload(e)} />
+
           <Stack direction="row" gap={1} mt={2} mb={3}>
-            <EmojiEmotions color="primary" />
-            <Image color="secondary" />
-            <VideoCameraBack color="success" />
-            <PersonAdd color="error" />
+            <a href="#"><i> <EmojiEmotions color="primary" /></i></a>
+            <a href="#"><i onClick={_upload}><Image color="secondary"/></i></a>
+            <a href="#"><i> <VideoCameraBack color="success" /></i></a>
+            <a href="#"><i> <PersonAdd color="error" /></i></a>
           </Stack>
           <ButtonGroup
             fullWidth
             variant="contained"
             aria-label="outlined primary button group"
           >
-            <Button>Post</Button>
+            <Button onClick={handlePost}>Post</Button>
             <Button sx={{ width: "100px" }}>
               <DateRange />
             </Button>
