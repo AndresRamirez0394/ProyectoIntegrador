@@ -54,3 +54,10 @@ export async function GetUser(UserId){
 
     return {user, isLoading};
 }
+
+export function DeletePost (id){
+    const [isLoading, setLoading] = useState(false);
+    const [deletePost, setDeletePost] = useState(false);
+
+    return {deletePost, isLoading};
+}
