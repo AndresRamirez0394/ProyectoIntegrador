@@ -1,3 +1,14 @@
+export const matriculaValidate = {
+    required: {
+        value: true,
+        message: "Ingresa tu matricula"
+    },
+    pattern: {
+        value: /^A\d{8}$/i,
+        message: "La matricula no es valida, intenta otra vez"
+    },
+};
+
 
 export const emailValidate = {
     required: {

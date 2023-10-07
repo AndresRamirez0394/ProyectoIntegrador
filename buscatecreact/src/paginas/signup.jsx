@@ -4,7 +4,7 @@ import { useRegister } from 'hooks/auth';
 import { useNavigate } from "react-router-dom";
 import {useForm} from "react-hook-form";
 import { toast } from 'react-toastify';
-import { emailValidate, passwordValidate } from 'utils/form-validate';
+import { emailValidate, passwordValidate, matriculaValidate } from 'utils/form-validate';
 
 export default function Signupform() {
   const { register: signup, isLoading } = useRegister();
@@ -39,7 +39,7 @@ export default function Signupform() {
             {/* Matricula */}
             <input className='input'
               type="matricula"
-              placeholder="Matricula" {...register("matricula")}
+              placeholder="Matricula" {...register("matricula", matriculaValidate)}
             />
             {/* Email */}
             <input className='input'
