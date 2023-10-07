@@ -50,8 +50,7 @@ export default function Post ({post}){
         component="img"
         height="20%"
         image={imgValue}
-        alt="Paella dish"
-      />: 1} 
+      />: <>{console.log("sin Imagen")}</>} 
       
       <CardContent>
         <Typography variant="body2" color="text.secondary">

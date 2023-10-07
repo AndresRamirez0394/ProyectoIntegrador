@@ -66,6 +66,7 @@ const Add = () => {
         setImage(url);
       })
     })
+
   }
 
   const handlePost = async () => {
@@ -82,6 +83,7 @@ const Add = () => {
       date: Date.now(),
       likes: [],
     });
+    setImage("");
     alert("Post created");
 
   }
