@@ -66,8 +66,12 @@ export function useRegister(){
     async function register({ matricula, email, password}) {
         setLoading(true);
 
-        const matriculaExists = await IsmatriculaExists(matricula);
-
+        let emailcheck = email.split("@");
+        if (emailcheck[1] !== "tec.mx"){
+            console.log("No es correo del tec");}
+        else{
+            const matriculaExists = await IsmatriculaExists(matricula);
+            
         if (matriculaExists){
             toast('Esta matricula ya esta registrada!', {
                 position: "top-center",
@@ -105,7 +109,7 @@ export function useRegister(){
             } finally {
                 setLoading(false)
             }
-        }
+        }}
     }
     return {register, isLoading};
 }
