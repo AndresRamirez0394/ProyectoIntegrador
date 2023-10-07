@@ -68,7 +68,14 @@ export function useRegister(){
 
         let emailcheck = email.split("@");
         if (emailcheck[1] !== "tec.mx"){
-            console.log("No es correo del tec");}
+            toast('Es necesario un correo Tec', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                theme: "light",
+                pauseOnHover: true,
+            });
+        }
         else{
             const matriculaExists = await IsmatriculaExists(matricula);
             
