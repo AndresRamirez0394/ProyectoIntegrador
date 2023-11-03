@@ -17,6 +17,7 @@ export default function Signupform() {
       matricula: data.matricula,
       email: data.email,
       password: data.password,
+      name: data.name,
     });
     if (succeeded) {
       toast('You are now logged in', {
@@ -33,9 +34,14 @@ export default function Signupform() {
 
       return (
         <div className="form-container sign-up-container">
-           <h1 style={{paddingTop: '1em'}}>Create Account</h1>
+           <h1 style={{paddingTop: '1em', paddingLeft: '4em'}} >Create Account</h1>
         
           <form style={{marginTop: '-100px'}} onSubmit={handleSubmit(handleRegister)}>
+            {/* Nombre */}
+            <input className='input'
+              type="nombre"
+              placeholder="Nombre" {...register("nombre")}
+            />
             {/* Matricula */}
             <input className='input'
               type="matricula"

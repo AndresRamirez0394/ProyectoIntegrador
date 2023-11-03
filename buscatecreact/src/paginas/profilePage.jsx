@@ -20,20 +20,25 @@ import {
 import Navbar from 'components/Navbar';
 import { useAuth } from 'hooks/auth';
 import { useLocation } from 'react-router';
-import { GetUser } from 'hooks/search';
+import { findOne } from 'hooks/search';
+import { useState } from 'react';
+import { set } from 'date-fns';
 
 export default function ProfilePage() {
   const {user, isLoading} = useAuth();
+  const [profile_data, setProfile] = useState("");
   const variable = useLocation();
   const matricula = variable.search.split('=')[1];
-  const profileUser = GetUser(matricula);
+
 
   const isMe = user?.matricula === matricula;
   
   useEffect(() => {
-    profileUser?.then((data) => {
-      console.log(data.user);
-    })
+      const profile =  findOne(matricula);
+      console.log(profile);
+      profile.then((data) => {
+        setProfile(data);
+      })
   },[])
 
   
@@ -52,7 +57,7 @@ export default function ProfilePage() {
                   style={{ width: '150px' }}
                   fluid />
                 <p className="text-muted mb-1">FULLSTACK DEV</p>
-                <p className="text-muted mb-4">MONTERREY MEXICO</p>
+                <p className="text-muted mb-4">{profile_data?.matricula}</p>
                 <div className="d-flex justify-content-center mb-2">
                   <MDBBtn>Follow</MDBBtn>
                   <MDBBtn outline className="ms-1">Message</MDBBtn>

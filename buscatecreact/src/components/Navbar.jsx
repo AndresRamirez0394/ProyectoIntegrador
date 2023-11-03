@@ -14,6 +14,8 @@ import {
 import React, { useState } from "react";
 import {useAuth, useLogout} from "hooks/auth"
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/base";
+import { GetUser } from "hooks/search";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -44,17 +46,26 @@ const UserBox = styled(Box)(({ theme }) => ({
     display: "none",
   },
 }));
+
+
 const Navbar = () => {
   const {logout, isLog} = useLogout();
   const [open, setOpen] = useState(false);
   const {user, isLoading} = useAuth();
   const navigate = useNavigate();
+  const [profile_data, setProfile] = useState("");
 
   if(isLoading) return "Loading..."
 
   const navigateToProfile = () =>{ 
+    
     navigate('/profile?matricula='+user?.matricula+'')
 
+  }
+
+  const search = () => {
+
+  
   }
 
   return (
@@ -64,9 +75,10 @@ const Navbar = () => {
           {user?.matricula}
         </Typography>
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
-        <Search>
+        <Search id= "search_field">
           <InputBase placeholder="search..." />
         </Search>
+        <Button onClick={search}>Hola</Button>
         <Icons>
           <Badge badgeContent={4} color="error">
             <Mail />

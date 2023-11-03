@@ -63,7 +63,7 @@ export function useRegister(){
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    async function register({ matricula, email, password}) {
+    async function register({ matricula, email, password, name}) {
         setLoading(true);
 
         let emailcheck = email.split("@");
@@ -99,7 +99,7 @@ export function useRegister(){
                 email: email,
                 post: [],
                 friends: [],
-                fullname: "",
+                fullname: name,
                 address: "",
                 mobile: "",
                 career: "",
@@ -123,7 +123,7 @@ export function useRegister(){
             });
 
             } catch(error){
-                toast('Nuh uh!', {
+                toast('Este usuario ya existe!', {
                     position: "top-center",
                     autoClose: 2000,
                     hideProgressBar: false,
