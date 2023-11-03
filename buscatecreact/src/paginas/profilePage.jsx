@@ -20,9 +20,12 @@ import {
 import Navbar from 'components/Navbar';
 import { useAuth } from 'hooks/auth';
 import { useLocation } from 'react-router';
-import { findOne } from 'hooks/search';
+import { profile} from 'hooks/search';
 import { useState } from 'react';
 import { set } from 'date-fns';
+import { get } from 'react-hook-form';
+import { db } from "lib/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 export default function ProfilePage() {
   const {user, isLoading} = useAuth();
@@ -34,14 +37,22 @@ export default function ProfilePage() {
   const isMe = user?.matricula === matricula;
   
   useEffect(() => {
-      const profile =  findOne(matricula);
-      console.log(profile);
-      profile.then((data) => {
-        setProfile(data);
-      })
+    getUser();
   },[])
 
-  
+  const getUser = () => {
+    const getFromFirebase = collection(db,"users");
+    getDocs(getFromFirebase).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data().matricula);
+        if(doc.data().matricula === matricula){
+          setProfile(doc.data());
+        }
+      });
+    });
+    console.log("datos");
+    console.log(profile_data);
+  }
   return (
     <section style={{ backgroundColor: '#eee' }}>
       <Navbar/>
@@ -56,7 +67,7 @@ export default function ProfilePage() {
                   className="rounded-circle"
                   style={{ width: '150px' }}
                   fluid />
-                <p className="text-muted mb-1">FULLSTACK DEV</p>
+                <p className="text-muted mb-1">Puesto</p>
                 <p className="text-muted mb-4">{profile_data?.matricula}</p>
                 <div className="d-flex justify-content-center mb-2">
                   <MDBBtn>Follow</MDBBtn>

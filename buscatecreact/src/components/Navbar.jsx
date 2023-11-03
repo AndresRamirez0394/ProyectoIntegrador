@@ -53,7 +53,6 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const {user, isLoading} = useAuth();
   const navigate = useNavigate();
-  const [profile_data, setProfile] = useState("");
 
   if(isLoading) return "Loading..."
 

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { arrayRemove, arrayUnion } from "firebase/firestore";
 import { query, where, getDocs, collection } from "firebase/firestore";
 import { useAuth } from "./auth";
+import { useNavigate } from "react-router-dom";
 
 export async function GetUser(matricula){
     const [isLoading, setLoading] = useState(false);
@@ -22,16 +23,3 @@ export async function GetUser(matricula){
     return {user, isLoading};
 
 }
-
-
-export const findOne = async (query) => {
-    console.log(query);
-    const q = query(collection(db, "users"), where("matricula", "==", query));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
-    });
-    console.log(querySnapshot);
-    return querySnapshot;
-  }
