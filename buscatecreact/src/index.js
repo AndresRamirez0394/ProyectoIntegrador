@@ -5,6 +5,7 @@ import Login from "./paginas/login";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import UserProfile from "paginas/profile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,6 +14,7 @@ root.render(
       <Routes>
         <Route path="/App" element={<App />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/profile' element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
     <ToastContainer></ToastContainer>

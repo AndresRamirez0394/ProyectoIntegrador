@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "../paginas/login";
 import Signup from "paginas/signup";
 import App from "../App";
+import UserProfile from "paginas/profile";
 
 export const ROOT = "/";
 export const LOGIN = "/login";
@@ -15,4 +16,5 @@ export const router = createBrowserRouter([
     {path: LOGIN, element: <Login />},
     {path: REGISTER, element: <Signup />},
     {path: FEED, element: <App /> },
+    {path: PROFILE, element: <UserProfile />},
 ])
