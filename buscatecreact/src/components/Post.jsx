@@ -10,6 +10,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import React from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "lib/firebase";
@@ -26,7 +27,7 @@ export default function Post ({post}){
   const {user, isLoading} = useAuth();
   const isLiked = likes.includes(user?.id) ? true : false;
   const {toggleLike, isLoading: likeLoading} = useToggleLike(id, isLiked, user?.id, );
-
+ 
   
 
   return (
@@ -70,6 +71,10 @@ export default function Post ({post}){
         <IconButton aria-label="share">
           <Share />
         </IconButton>
+        {user?.matricula === matricula ?
+        <IconButton aria-label="share">
+        <DeleteForeverIcon />
+      </IconButton> : <></>}
       </CardActions>
     </Card>
   );

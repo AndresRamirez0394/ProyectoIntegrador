@@ -96,6 +96,23 @@ export function useRegister(){
                 id: res.user.uid,
                 matricula: matricula.toLowerCase(),
                 date: Date.now(),
+                email: email,
+                post: [],
+                friends: [],
+                fullname: "",
+                address: "",
+                mobile: "",
+                career: "",
+                skills: [],
+                interests: [],
+                instagram: "",
+                facebook: "",
+                twitter: "",
+                linkedin: "",
+                github: "",
+                position: "",
+                profile_pic: "",
+
               });
               toast('Bienvenido a buscaTEC, ahora puedes ingresar con tu cuenta!', {
                 position: "top-center",

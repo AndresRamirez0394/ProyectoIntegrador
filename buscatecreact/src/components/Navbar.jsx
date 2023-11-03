@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import {useAuth, useLogout} from "hooks/auth"
+import { useNavigate } from "react-router-dom";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -47,8 +48,14 @@ const Navbar = () => {
   const {logout, isLog} = useLogout();
   const [open, setOpen] = useState(false);
   const {user, isLoading} = useAuth();
+  const navigate = useNavigate();
 
-  if(isLoading) return "Loading...";
+  if(isLoading) return "Loading..."
+
+  const navigateToProfile = () =>{ 
+    navigate('/profile?matricula='+user?.matricula+'')
+
+  }
 
   return (
     <AppBar position="sticky">
@@ -95,7 +102,7 @@ const Navbar = () => {
           horizontal: "right",
         }}
       >
-        <MenuItem>Profile</MenuItem>
+        <MenuItem onClick={navigateToProfile}>Profile</MenuItem>
         <MenuItem>My account</MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>

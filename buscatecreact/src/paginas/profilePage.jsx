@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
 import {
   MDBCol,
   MDBContainer,
@@ -16,27 +17,32 @@ import {
   MDBListGroup,
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
+import Navbar from 'components/Navbar';
+import { useAuth } from 'hooks/auth';
+import { useLocation } from 'react-router';
+import { GetUser } from 'hooks/search';
 
 export default function ProfilePage() {
+  const {user, isLoading} = useAuth();
+  const variable = useLocation();
+  const matricula = variable.search.split('=')[1];
+  const profileUser = GetUser(matricula);
+
+  const isMe = user?.matricula === matricula;
+  
+  useEffect(() => {
+    profileUser?.then((data) => {
+      console.log(data.user);
+    })
+  },[])
+
+  
   return (
     <section style={{ backgroundColor: '#eee' }}>
-      <MDBContainer className="py-5">
+      <Navbar/>
+      <MDBContainer>
         <MDBRow>
-          <MDBCol>
-            <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
-              <MDBBreadcrumbItem>
-                <a href='#'>Home</a>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>
-                <a href="#">User</a>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem active>User Profile</MDBBreadcrumbItem>
-            </MDBBreadcrumb>
-          </MDBCol>
-        </MDBRow>
-
-        <MDBRow>
-          <MDBCol lg="4">
+          <MDBCol lg="4" >
             <MDBCard className="mb-4">
               <MDBCardBody className="text-center">
                 <MDBCardImage
@@ -81,6 +87,7 @@ export default function ProfilePage() {
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
+
           <MDBCol lg="8">
             <MDBCard className="mb-4">
               <MDBCardBody>
