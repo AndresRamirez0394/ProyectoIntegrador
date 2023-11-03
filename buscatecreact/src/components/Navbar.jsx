@@ -16,6 +16,10 @@ import {useAuth, useLogout} from "hooks/auth"
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/base";
 import { GetUser } from "hooks/search";
+import { db } from "lib/firebase";
+import { collection, getDocs } from "firebase/firestore"; 
+import { createPopper } from '@popperjs/core';
+
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -47,11 +51,13 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-
 const Navbar = () => {
+  
   const {logout, isLog} = useLogout();
   const [open, setOpen] = useState(false);
+  const [area_open, setAreaOpen] = useState(false);
   const {user, isLoading} = useAuth();
+  const [area, setArea] = useState("");
   const navigate = useNavigate();
 
   if(isLoading) return "Loading..."
@@ -62,10 +68,24 @@ const Navbar = () => {
 
   }
 
-  const search = () => {
 
-  
+  const getUser = () => {
+    const data = document.getElementById("search_field").value;
+    
+    const getFromFirebase = collection(db,"users");
+    getDocs(getFromFirebase).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data().matricula);
+        if(doc.data().matricula === data){
+          console.log(data)
+          console.log("encontrado");
+        }
+      });
+    });
+    console.log("datos");
+
   }
+
 
   return (
     <AppBar position="sticky">
@@ -74,10 +94,43 @@ const Navbar = () => {
           {user?.matricula}
         </Typography>
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
-        <Search id= "search_field">
-          <InputBase placeholder="search..." />
+        <Search >
+          <InputBase id= "search_field" placeholder="search..." />
         </Search>
-        <Button onClick={search}>Hola</Button>
+        <div>
+        <Icons>
+          <Badge badgeContent={4} color="error">
+            <Mail />
+          </Badge>
+          <Badge badgeContent={2} color="error">
+            <Notifications />
+          </Badge>
+          <Avatar
+            sx={{ width: 30, height: 30 }}
+            src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            onClick={(e) => setAreaOpen(true)}
+          />
+        </Icons>
+        <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        open={area_open}
+        onClose={(e) => setAreaOpen(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <MenuItem onClick={(e) => setArea("skills")}>Habilidad</MenuItem>
+        <MenuItem onClick={(e) => setArea("matricula")}>Matricula</MenuItem>
+      </Menu>
+      </div>
+
+        <Button onClick={(e) => getUser()}>Hola</Button>
         <Icons>
           <Badge badgeContent={4} color="error">
             <Mail />
