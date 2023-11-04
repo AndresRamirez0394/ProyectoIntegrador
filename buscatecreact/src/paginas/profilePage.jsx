@@ -25,13 +25,18 @@ import { useState } from 'react';
 import { set } from 'date-fns';
 import { get } from 'react-hook-form';
 import { db } from "lib/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 
 export default function ProfilePage() {
   const {user, isLoading} = useAuth();
   const [profile_data, setProfile] = useState("");
   const variable = useLocation();
+  const id = variable.search.split('=')[1];
   const matricula = variable.search.split('=')[1];
+  const [editMode, setEditMode] = useState(false);
+  const [editName, setEditName] = useState(profile_data.name);
+  const [editedPhone, setEditedPhone] = useState(profile_data.PhoneNo)
+  const {editedEmail, setEditedEmail} = useState(profile_data.email)
 
 
   const isMe = user?.matricula === matricula;
@@ -53,12 +58,52 @@ export default function ProfilePage() {
     console.log("datos");
     console.log(profile_data);
   }
+
+  const handleSaveClick = async () => {
+    const updatedData = {
+      name: editName,
+      PhoneNo: editedPhone,
+    }
+
+    const userRef = doc(db, "users", user?.id);
+    try {
+      await updateDoc(userRef, updatedData);
+      console.log("Document updated successfully");
+      setEditMode(false);
+    } catch (error){
+      console.error("Error", error);
+    }
+  };
+
   return (
     <section style={{ backgroundColor: '#eee' }}>
-      <Navbar/>
-      <MDBContainer>
-        <MDBRow>
-          <MDBCol lg="4" >
+    <Navbar />
+    <MDBContainer>
+      <MDBRow>
+        <MDBCol lg="4">
+          {editMode ? ( // Show edit fields when in edit mode
+          <div>
+            {/* Input fields and "Save" button here */}
+            <input
+                type="text"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+              />
+              <input
+                type="text"
+                value={editedEmail}
+                onChange={(e) => setEditedEmail(e.target.value)}
+              />
+              <input
+                type="text"
+                value={editedPhone}
+                onChange={(e) => setEditedPhone(e.target.value)}
+              />
+              <MDBBtn onClick={handleSaveClick}>Save</MDBBtn>
+          </div>
+          ) : (
+            <div>
+            <MDBBtn onClick={() => setEditMode(true)}>Edit Profile</MDBBtn>
             <MDBCard className="mb-4">
               <MDBCardBody className="text-center">
                 <MDBCardImage
@@ -66,7 +111,8 @@ export default function ProfilePage() {
                   alt="avatar"
                   className="rounded-circle"
                   style={{ width: '150px' }}
-                  fluid />
+                  fluid
+                />
                 <p className="text-muted mb-1">Puesto</p>
                 <p className="text-muted mb-4">{profile_data?.matricula}</p>
                 <div className="d-flex justify-content-center mb-2">
@@ -75,7 +121,6 @@ export default function ProfilePage() {
                 </div>
               </MDBCardBody>
             </MDBCard>
-
             <MDBCard className="mb-4 mb-lg-0">
               <MDBCardBody className="p-0">
                 <MDBListGroup flush className="rounded-3">
@@ -87,7 +132,7 @@ export default function ProfilePage() {
                     <MDBIcon fab icon="github fa-lg" style={{ color: '#333333' }} />
                     <MDBCardText>PONER TU GITHUB</MDBCardText>
                   </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
+                  <MDBListGroupItem className="d-flex justify-contentbetween align-items-center p-3">
                     <MDBIcon fab icon="twitter fa-lg" style={{ color: '#55acee' }} />
                     <MDBCardText>@X</MDBCardText>
                   </MDBListGroupItem>
@@ -102,57 +147,96 @@ export default function ProfilePage() {
                 </MDBListGroup>
               </MDBCardBody>
             </MDBCard>
-          </MDBCol>
+            </div>
+          )}
+        </MDBCol>
 
-          <MDBCol lg="8">
-            <MDBCard className="mb-4">
-              <MDBCardBody>
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Full Name</MDBCardText>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <MDBCardText className="text-muted">Johnatan Smith-ESTO VA A SER EDITABLE</MDBCardText>
-                  </MDBCol>
-                </MDBRow>
-                <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Email</MDBCardText>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <MDBCardText className="text-muted">123@tec.mx</MDBCardText>
-                  </MDBCol>
-                </MDBRow>
-                <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Phone</MDBCardText>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <MDBCardText className="text-muted">(097) 234-5678</MDBCardText>
-                  </MDBCol>
-                </MDBRow>
-                <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Mobile</MDBCardText>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <MDBCardText className="text-muted">(098) 765-4321</MDBCardText>
-                  </MDBCol>
-                </MDBRow>
-                <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Address</MDBCardText>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <MDBCardText className="text-muted">Bay Area, San Francisco, CA</MDBCardText>
-                  </MDBCol>
-                </MDBRow>
-              </MDBCardBody>
-            </MDBCard>
+        <MDBCol lg="8">
+          <MDBCard className="mb-4">
+            <MDBCardBody>
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Full Name</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                    {editMode ? (
+                      // Editable input field for name
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                      />
+                    ) : (
+                      profile_data?.name
+                    )}
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Email</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                    {editMode ? (
+                      // Editable input field for email
+                      <input
+                        type="text"
+                        value={editedEmail}
+                        onChange={(e) => setEditedEmail(e.target.value)}
+                      />
+                    ) : (
+                      profile_data?.email
+                    )}
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Phone</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                    {editMode ? (
+                      // Editable input field for phone
+                      <input
+                        type="text"
+                        value={editedPhone}
+                        onChange={(e) => setEditedPhone(e.target.value)}
+                      />
+                    ) : (
+                      profile_data?.phone
+                    )}
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              {/* Add other fields similarly */}
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Mobile</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Address</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+            </MDBCardBody>
+          </MDBCard>
 
             <MDBRow>
               <MDBCol md="6">
