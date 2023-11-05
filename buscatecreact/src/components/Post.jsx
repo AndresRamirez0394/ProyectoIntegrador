@@ -18,9 +18,12 @@ import { collection, orderBy, query } from "@firebase/firestore";
 import { useAuth } from "hooks/auth";
 import {formatDistanceToNow} from "date-fns";
 import { useToggleLike, GetUser } from "hooks/posts";
+import Popover from '@mui/material/Popover';
+import Button from '@mui/material/Button';
 
 export default function Post ({post}){
   const {txtValue} = post;
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const {imgValue} = post;
   const {date} = post;
   const {id, likes, owner, matricula} = post;
@@ -28,7 +31,15 @@ export default function Post ({post}){
   const isLiked = likes.includes(user?.id) ? true : false;
   const {toggleLike, isLoading: likeLoading} = useToggleLike(id, isLiked, user?.id, );
  
-  
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id_settings = open ? 'simple-popover' : undefined;
 
   return (
     <Card sx={{ margin: 5 }}>
@@ -39,9 +50,26 @@ export default function Post ({post}){
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+            
+
+          <div>
+            <IconButton aria-describedby={id_settings} variant="contained" onClick={handleClick}>
             <MoreVert />
-          </IconButton>
+      </IconButton>
+      <Popover
+        id={id_settings}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <Typography sx={{ p: 2 }}>Agregar a amigos</Typography>
+        <Typography sx={{ p: 2 }}>Ver Perfil</Typography>
+      </Popover>
+          </div>
         }
         title= {matricula}
         subheader = {formatDistanceToNow(date)}

@@ -71,13 +71,14 @@ const Navbar = () => {
 
   const getUser = () => {
     const data = document.getElementById("search_field").value;
-    
+    console.log("matricula " +  data);
     const getFromFirebase = collection(db,"users");
+    
+
     getDocs(getFromFirebase).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         console.log(doc.data().matricula);
-        if(doc.data().matricula === data){
-          console.log(data)
+        if(doc.data().matricula.toLowerCase() === data.toLowerCase()){
           console.log("encontrado");
         }
       });
@@ -99,12 +100,6 @@ const Navbar = () => {
         </Search>
         <div>
         <Icons>
-          <Badge badgeContent={4} color="error">
-            <Mail />
-          </Badge>
-          <Badge badgeContent={2} color="error">
-            <Notifications />
-          </Badge>
           <Avatar
             sx={{ width: 30, height: 30 }}
             src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
