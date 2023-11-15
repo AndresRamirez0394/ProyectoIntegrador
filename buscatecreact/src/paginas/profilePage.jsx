@@ -69,6 +69,8 @@ export default function ProfilePage() {
     try {
       await updateDoc(userRef, updatedData);
       console.log("Document updated successfully");
+      setEditName(updatedData.name);
+      setEditedPhone(updatedData.PhoneNo);
       setEditMode(false);
     } catch (error){
       console.error("Error", error);
