@@ -79,7 +79,7 @@ const Navbar = () => {
       querySnapshot.forEach((doc) => {
         console.log(doc.data().matricula);
         if(doc.data().matricula.toLowerCase() === data.toLowerCase()){
-          console.log("encontrado");
+          console.log("encontrado" + doc.data().matricula);
         }
       });
     });
@@ -125,7 +125,7 @@ const Navbar = () => {
       </Menu>
       </div>
 
-        <Button onClick={(e) => getUser()}>Hola</Button>
+        <Button onClick={(e) => getUser()}>Buscar</Button>
         <Icons>
           <Badge badgeContent={4} color="error">
             <Mail />

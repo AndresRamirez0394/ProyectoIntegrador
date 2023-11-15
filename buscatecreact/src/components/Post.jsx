@@ -11,25 +11,31 @@ import {
   Typography,
 } from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CommentIcon from '@mui/icons-material/Comment';
 import React from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "lib/firebase";
 import { collection, orderBy, query } from "@firebase/firestore";
 import { useAuth } from "hooks/auth";
 import {formatDistanceToNow} from "date-fns";
-import { useToggleLike, GetUser } from "hooks/posts";
+import { useToggleLike, GetUser , DeletePost} from "hooks/posts";
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Post ({post}){
   const {txtValue} = post;
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mat, setMat] = useState("");
   const {imgValue} = post;
   const {date} = post;
   const {id, likes, owner, matricula} = post;
   const {user, isLoading} = useAuth();
   const isLiked = likes.includes(user?.id) ? true : false;
   const {toggleLike, isLoading: likeLoading} = useToggleLike(id, isLiked, user?.id, );
+  const {deletePost, isLoading: deleteLoading} = DeletePost(id);
+  const navigate = useNavigate();
  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,6 +44,20 @@ export default function Post ({post}){
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const navigateToProfile = () =>{ 
+    console.log("matricula a buscar" +  matricula);
+    navigate('/profile?matricula='+matricula+'')
+
+  }
+
+  const navigateToComments = () =>{ 
+    console.log("id del post antes de entrar " +  id);
+    navigate('/comments?post='+id+'')
+
+  }
+
+
   const open = Boolean(anchorEl);
   const id_settings = open ? 'simple-popover' : undefined;
 
@@ -67,7 +87,7 @@ export default function Post ({post}){
         }}
       >
         <Typography sx={{ p: 2 }}>Agregar a amigos</Typography>
-        <Typography sx={{ p: 2 }}>Ver Perfil</Typography>
+        <Typography onClick={(e) => navigateToProfile() } sx={{ p: 2 }}>Ver Perfil</Typography>
       </Popover>
           </div>
         }
@@ -97,11 +117,14 @@ export default function Post ({post}){
         {likes.length}
         </IconButton>
         <IconButton aria-label="share">
-          <Share />
+          <CommentIcon 
+          onClick = {(e) => navigateToComments()}/>
         </IconButton>
         {user?.matricula === matricula ?
         <IconButton aria-label="share">
-        <DeleteForeverIcon />
+        <DeleteForeverIcon
+        onClick={(e) =>  console.log("delete post ")}
+        />
       </IconButton> : <></>}
       </CardActions>
     </Card>

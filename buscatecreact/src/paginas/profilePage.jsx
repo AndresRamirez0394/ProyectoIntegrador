@@ -33,7 +33,7 @@ export default function ProfilePage() {
   const variable = useLocation();
   const matricula = variable.search.split('=')[1];
 
-
+  console.log("matricula a buscar" +  matricula);
   const isMe = user?.matricula === matricula;
   
   useEffect(() => {
