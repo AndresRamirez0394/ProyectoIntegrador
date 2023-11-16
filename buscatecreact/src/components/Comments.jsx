@@ -17,7 +17,7 @@ export default function Comments(){
     return (
         <Box align="center" pt= "10" width="40%" >
             <Post post={post}/>
-            <NewComment/>
+            <NewComment post = {post}/>
         </Box>
     );
 }
