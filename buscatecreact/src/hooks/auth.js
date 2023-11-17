@@ -61,7 +61,6 @@ export function useLogin(){
 
 export function useRegister(){
     const [isLoading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
     async function register({ matricula, email, password, name}) {
         setLoading(true);
@@ -97,21 +96,7 @@ export function useRegister(){
                 matricula: matricula.toLowerCase(),
                 date: Date.now(),
                 email: email,
-                post: [],
-                friends: [],
-                fullname: name,
-                address: "",
-                mobile: "",
-                career: "",
-                skills: [],
-                interests: [],
-                instagram: "",
-                facebook: "",
-                twitter: "",
-                linkedin: "",
-                github: "",
-                position: "",
-                profile_pic: "",
+
 
               });
               toast('Bienvenido a buscaTEC, ahora puedes ingresar con tu cuenta!', {
