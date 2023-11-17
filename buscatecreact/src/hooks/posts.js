@@ -1,8 +1,10 @@
 import { uuidv4 } from "@firebase/util";
-import {doc, setDoc, getDoc, updateDoc} from "firebase/firestore";
+import {doc, setDoc, getDoc, updateDoc, collection, where, query} from "firebase/firestore";
 import { db } from "lib/firebase";
 import { useState } from "react";
 import { arrayRemove, arrayUnion } from "firebase/firestore";
+import { useCollection, useDocumentData } from "react-firebase-hooks/firestore";
+import { set } from "date-fns";
 
 export function useAddPost (){
     const [isLoading, setLoading] = useState(false);
@@ -54,6 +56,13 @@ export async function GetUser(UserId){
 
     return {user, isLoading};
 }
+
+export function usePost(id){
+    const q = doc(db, "Post", id);
+    const [post, isLoading] = useDocumentData(q);
+    return {post, isLoading}; 
+}
+
 
 export function DeletePost (id){
     const [isLoading, setLoading] = useState(false);

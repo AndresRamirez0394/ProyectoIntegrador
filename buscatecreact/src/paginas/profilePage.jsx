@@ -38,7 +38,7 @@ export default function ProfilePage() {
   const [editedPhone, setEditedPhone] = useState(profile_data.PhoneNo)
   const {editedEmail, setEditedEmail} = useState(profile_data.email)
 
-
+  console.log("matricula a buscar" +  matricula);
   const isMe = user?.matricula === matricula;
   
   useEffect(() => {

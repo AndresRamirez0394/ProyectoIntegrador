@@ -49,7 +49,7 @@ const Sidebar = ({mode,setMode}) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component="a" href="https://market.tec.mx" >
               <ListItemIcon>
                 <Storefront />
               </ListItemIcon>
