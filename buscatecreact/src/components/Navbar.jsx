@@ -117,6 +117,7 @@ const Navbar = () => {
               {...params}
               id="search_field"
               placeholder="Search by Matricula"
+              sx={{width: '500px'}}
             />
           )}
           onInputChange={getUser}
