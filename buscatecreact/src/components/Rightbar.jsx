@@ -54,7 +54,7 @@ useEffect(() => {
     <Box flex={2} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
       <Box position="fixed" width={300}>
         <Typography variant="h6" fontWeight={100} mt={2} mb={2}>
-          Latest Photos
+          Ultimas Fotos
         </Typography>
         <ImageList cols={3} rowHeight={100} gap={5}>
           {images.map((item) => (
