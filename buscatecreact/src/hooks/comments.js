@@ -55,19 +55,7 @@ export function useComments(postID){
 
     return {comments, loading};
 }
- /*
-export function useDeleteComment({id}){
-    const [isLoading, setLoading] = useState(false);
 
-    async function deleteCommnet(){
-        setLoading(true);
-        const ref = doc(db, "comments", id);
-        await deleteDoc(ref);
-        setLoading(false);
-    }
-    return {deleteCommnet, isLoading};
-}
-*/
 
 
 export function useDeleteComment(id){

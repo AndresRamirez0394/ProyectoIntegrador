@@ -1,6 +1,7 @@
 import { Favorite, FavoriteBorder, MoreVert, Share } from "@mui/icons-material";
 import {
   Avatar,
+  Box,
   Card,
   CardActions,
   CardContent,
@@ -24,6 +25,7 @@ import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useComments } from "hooks/comments";
+import { useAddFriend } from "hooks/friends";
 
 export default function Post ({post}){
   const {txtValue} = post;
@@ -33,12 +35,14 @@ export default function Post ({post}){
   const {date} = post;
   const {id, likes, owner, matricula} = post;
   const {user, isLoading} = useAuth();
+  const isFriend = user?.friends.includes(owner) ? true : false;
   const isLiked = likes.includes(user?.id) ? true : false;
   const {toggleLike, isLoading: likeLoading} = useToggleLike(id, isLiked, user?.id, );
+  const {addFriends, isLoading: friendLoading} = useAddFriend(user?.id, isFriend, owner);
   const {deletePost, isLoading: deleteLoading} = DeletePost(id);
   const {comments , isLoading: commentsLoading } = useComments(id);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -88,8 +92,18 @@ export default function Post ({post}){
           horizontal: 'left',
         }}
       >
-        <Typography sx={{ p: 2 }}>Agregar a amigos</Typography>
-        <Typography onClick={(e) => navigateToProfile() } sx={{ p: 2 }}>Ver Perfil</Typography>
+        <p >
+        <IconButton 
+         onClick={addFriends}>
+        <Typography sx={{ p: 2 }}>{isFriend? "Eliminar de Amigos":"Agregar a amigos"  }</Typography> 
+        </IconButton>
+        </p>
+        <p>
+        <IconButton
+        onClick={(e) => navigateToProfile() }>
+        <Typography  sx={{ p: 2 }}>Ver Perfil</Typography>
+        </IconButton>
+        </p>
       </Popover>
           </div>
         }

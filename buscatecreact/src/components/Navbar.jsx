@@ -130,7 +130,6 @@ const Navbar = () => {
       </div>
 
         <Button onClick={(e) => getUser()}>Buscar</Button>
-        <Button onClick={navigateToFeed}>Home</Button>
         <Icons>
           <Badge badgeContent={4} color="error">
             <Mail />
