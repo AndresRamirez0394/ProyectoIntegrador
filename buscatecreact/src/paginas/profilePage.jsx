@@ -57,31 +57,55 @@ export default function ProfilePage() {
 
   const [isEditingExperience, setIsEditingExperience] = useState(false);
 
-  const saveExperience = () => {
-    setIsEditingExperience(false);
-  }
+  const saveExperience = async () => {
+    const updatedData = {
+      titulo1: experience1Title,
+      experiencia1: experience1Description,
+      titulo2: experience2Title,
+      experiencia2: experience2Description,
+      titulo3: experience3Title,
+      experiencia3: experience3Description,
+    }
+    const userRef = doc(db, "users", user?.id);
+    try {
+      await updateDoc(userRef, updatedData);
+      console.log("Document updated successfully");
+      setExperience1Title(updatedData.titulo1);
+      setExperience1Description(updatedData.experiencia1);
+      setExperience2Title(updatedData.titulo2);
+      setExperience2Description(updatedData.experiencia2);
+      setIsEditingExperience(false);
+    } catch (error){
+      console.error("Error", error);
+    }
+  };
 
   console.log("matricula a buscar" +  matricula);
   const isMe = user?.matricula === matricula;
   
   useEffect(() => {
-    getUser();
+    const fetchData = async () => {
+      await getUser();
+    };
+    fetchData();
   },[])
 
-  const [isEditingSkills, setIsEditingSkills] = useState(false);
 
-  const getUser = () => {
+  const getUser = async () => {
     const getFromFirebase = collection(db,"users");
-    getDocs(getFromFirebase).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data().matricula);
-        if(doc.data().matricula === matricula){
-          setProfile(doc.data());
-        }
-      });
+    const querySnapshot = await getDocs(getFromFirebase);
+
+    querySnapshot.forEach((doc) => {
+      if (doc.data().matricula === matricula){
+        setProfile(doc.data());
+
+        setExperience1Title(doc.data().titulo1 || '');
+        setExperience1Description(doc.data().experiencia1 || '');
+        setExperience2Title(doc.data().titulo2 || '');
+        setExperience2Description(doc.data().experiencia2 || '');
+        setEditedPhone(doc.data().PhoneNo || '');
+      }
     });
-    console.log("datos");
-    console.log(profile_data);
   }
 
   const handleSaveClick = async () => {
