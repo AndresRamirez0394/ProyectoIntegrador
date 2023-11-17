@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Typography, Divider } from "@mui/material";
-import Comment from "./NewCommentComment";
+import Comment from "./NewComment";
 
 function CommentFeed({ comments }) {
   const [loading, setLoading] = useState(true);

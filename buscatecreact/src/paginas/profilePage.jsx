@@ -106,6 +106,11 @@ export default function ProfilePage() {
         setExperience2Title(doc.data().titulo2 || '');
         setExperience2Description(doc.data().experiencia2 || '');
         setEditedPhone(doc.data().PhoneNo || '');
+        setWebDesignLevel(doc.data().webDesignLevel || 1);
+        setSoftwareLevel(doc.data().softwareLevel || 1);
+        setMobileLevel(doc.data().mobileLevel || 1);
+        setFrontLevel(doc.data().frontLevel || 1);
+        setBackLevel(doc.data().backLevel || 1);
       }
     });
   }

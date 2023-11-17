@@ -11,6 +11,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import Autocomplete from '@mui/lab/Autocomplete';
+import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import {useAuth, useLogout} from "hooks/auth"
 import { useNavigate } from "react-router-dom";
@@ -18,7 +20,7 @@ import { Button } from "@mui/base";
 import { GetUser } from "hooks/search";
 import { db } from "lib/firebase";
 import { collection, getDocs } from "firebase/firestore"; 
-import { createPopper } from '@popperjs/core';
+
 
 
 const StyledToolbar = styled(Toolbar)({
@@ -52,13 +54,15 @@ const UserBox = styled(Box)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  
+  const [foundUser, setFoundUser] = useState(null);
   const {logout, isLog} = useLogout();
   const [open, setOpen] = useState(false);
   const [area_open, setAreaOpen] = useState(false);
   const {user, isLoading} = useAuth();
   const [area, setArea] = useState("");
   const navigate = useNavigate();
+  const [matriculas, setMatriculas] = useState([]);
+
 
   if(isLoading) return "Loading..."
 
@@ -68,24 +72,30 @@ const Navbar = () => {
 
   }
 
+  const navigateUserProfile = () =>{
+    navigate('/profile?matricula='+foundUser.matricula+'')
+  }
+
   const navigateToFeed = () =>{
     navigate('/App?matricula='+user?.matricula+'')
   }
 
 
-  const getUser = () => {
-    const data = document.getElementById("search_field").value;
-    console.log("matricula " +  data);
+  const getUser = (event, newValue) => {
+    const data = newValue || "";
     const getFromFirebase = collection(db,"users");
-    
 
     getDocs(getFromFirebase).then((querySnapshot) => {
+      const matriculasList = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.data().matricula);
-        if(doc.data().matricula.toLowerCase() === data.toLowerCase()){
+        const matricula = doc.data().matricula.toLowerCase();
+        matriculasList.push(matricula);
+        if(matricula == data.toLowerCase()){
           console.log("encontrado" + doc.data().matricula);
+          setFoundUser(doc.data());
         }
       });
+      setMatriculas(matriculasList);
     });
     console.log("datos");
 
@@ -99,17 +109,29 @@ const Navbar = () => {
           {user?.matricula.toUpperCase()  }
         </Typography>
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
-        <Search >
-          <InputBase id= "search_field" placeholder="search..." />
-        </Search>
-        <div>
-        <Icons>
-          <Avatar
-            sx={{ width: 30, height: 30 }}
-            src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            onClick={(e) => setAreaOpen(true)}
+        <Autocomplete
+          options={matriculas}
+          getOptionLabel={(option) => option}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              id="search_field"
+              placeholder="Search by Matricula"
+            />
+          )}
+          onInputChange={getUser}
           />
-        </Icons>
+          {foundUser && (
+      <section style={{ backgroundColor: '#eee'}}>
+            <p>
+              Found User:
+              <button onClick={navigateUserProfile}>
+              {foundUser.matricula} - {foundUser.name}
+              </button>
+            </p>
+      </section>
+    )}
+        <div>
         <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
@@ -170,6 +192,11 @@ const Navbar = () => {
         <MenuItem>My account</MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
+      {foundUser && (
+        <section style={{backgroundColor: '#eee'}}>
+
+        </section>
+      )}
     </AppBar>
   );
 };
