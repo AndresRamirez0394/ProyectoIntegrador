@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useComments } from "hooks/comments";
 import { useAddFriend } from "hooks/friends";
+import { useUser } from "hooks/useUser";
 
 export default function Post ({post}){
   const {txtValue} = post;
@@ -41,6 +42,8 @@ export default function Post ({post}){
   const {addFriends, isLoading: friendLoading} = useAddFriend(user?.id, isFriend, owner);
   const {deletePost, isLoading: deleteLoading} = DeletePost(id);
   const {comments , isLoading: commentsLoading } = useComments(id);
+  const {user: getUser, isLoading: userLoading} = useUser(owner);
+
 
   const navigate = useNavigate();
   const handleClick = (event) => {
@@ -107,7 +110,7 @@ export default function Post ({post}){
       </Popover>
           </div>
         }
-        title= {matricula}
+        title= {getUser?.name ?  getUser?.name :  matricula}
         subheader = {formatDistanceToNow(date)}
       />
 

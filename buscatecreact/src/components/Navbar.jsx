@@ -4,6 +4,7 @@ import {
   Avatar,
   Badge,
   Box,
+  IconButton,
   InputBase,
   Menu,
   MenuItem,
@@ -95,21 +96,25 @@ const Navbar = () => {
   return (
     <AppBar position="sticky">
       <StyledToolbar>
-        <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
+        <IconButton
+         onClick= { navigateToFeed}
+         >
+        <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } , color: "white" }}>
           {user?.matricula.toUpperCase()  }
         </Typography>
+        </IconButton>
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
         <Search >
           <InputBase id= "search_field" placeholder="search..." />
+          <IconButton 
+         onClick={(e) => setAreaOpen(true)}>
+        <Typography >Tipo de Busqueda</Typography> 
+        </IconButton>
         </Search>
         <div>
-        <Icons>
-          <Avatar
-            sx={{ width: 30, height: 30 }}
-            src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            onClick={(e) => setAreaOpen(true)}
-          />
-        </Icons>
+        <p >
+        
+        </p>
         <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
