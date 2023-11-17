@@ -26,6 +26,8 @@ import { set } from 'date-fns';
 import { get } from 'react-hook-form';
 import { db } from "lib/firebase";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import Sidebar from 'components/Sidebar';
+import { Box } from '@mui/system';
 
 export default function ProfilePage() {
   const {user, isLoading} = useAuth();
@@ -439,6 +441,7 @@ export default function ProfilePage() {
           </MDBCol>
         </MDBRow>
       </MDBContainer>
+
     </section>
   );
 }

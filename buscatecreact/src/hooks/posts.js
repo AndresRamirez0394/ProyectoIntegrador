@@ -1,10 +1,11 @@
 import { uuidv4 } from "@firebase/util";
-import {doc, setDoc, getDoc, updateDoc, collection, where, query} from "firebase/firestore";
+import {doc, setDoc, getDoc, updateDoc, collection, where, query, deleteDoc, getDocs} from "firebase/firestore";
 import { db } from "lib/firebase";
 import { useState } from "react";
 import { arrayRemove, arrayUnion } from "firebase/firestore";
 import { useCollection, useDocumentData } from "react-firebase-hooks/firestore";
 import { set } from "date-fns";
+import { toast } from "react-toastify";
 
 export function useAddPost (){
     const [isLoading, setLoading] = useState(false);
@@ -66,7 +67,32 @@ export function usePost(id){
 
 export function DeletePost (id){
     const [isLoading, setLoading] = useState(false);
-    const [deletePost, setDeletePost] = useState(false);
+
+    async function deletePost(){
+        const res = window.confirm("¿Estas seguro que quieres eliminar esta publicacion?");
+        if(res){
+            //delete post
+            setLoading(true);
+            const ref = doc(db, "Post", id);
+            await deleteDoc(ref);
+            setLoading(false);
+
+
+            const q = query(collection(db, "comments"), where("postID", "==", id));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach( async (doc) => {
+                deleteDoc(doc.ref);
+            });
+            toast('Publicacion Eliminada', {
+                position: "top-center",
+                autoClose: 100,
+                hideProgressBar: false,
+                theme: "dark",
+            });
+            setLoading(false);
+        }
+    }
+
 
     return {deletePost, isLoading};
 }

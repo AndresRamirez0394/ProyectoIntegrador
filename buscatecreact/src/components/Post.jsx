@@ -23,6 +23,7 @@ import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useComments } from "hooks/comments";
 
 export default function Post ({post}){
   const {txtValue} = post;
@@ -35,8 +36,9 @@ export default function Post ({post}){
   const isLiked = likes.includes(user?.id) ? true : false;
   const {toggleLike, isLoading: likeLoading} = useToggleLike(id, isLiked, user?.id, );
   const {deletePost, isLoading: deleteLoading} = DeletePost(id);
+  const {comments , isLoading: commentsLoading } = useComments(id);
   const navigate = useNavigate();
- 
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -112,18 +114,20 @@ export default function Post ({post}){
             onClick={toggleLike}
             icon={isLiked?<Favorite sx={{ color: "red" }} /> : <FavoriteBorder /> } 
             checkedIcon={<Favorite sx={{ color: "red" }} />}
-            
           />
         {likes.length}
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton >
           <CommentIcon 
           onClick = {(e) => navigateToComments()}/>
+          {comments?.length}
         </IconButton>
+        
         {user?.matricula === matricula ?
-        <IconButton aria-label="share">
+        <IconButton
+        onClick={deletePost}
+        >
         <DeleteForeverIcon
-        onClick={(e) =>  console.log("delete post ")}
         />
       </IconButton> : <></>}
       </CardActions>

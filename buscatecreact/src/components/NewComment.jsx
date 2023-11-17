@@ -11,7 +11,10 @@ export default function NewComment({post}) {
   const {id: postID} = post;
   const {user, isLoading} = useAuth();
   const {register, handleSubmit, reset} = useForm();
-  const {addComment, isLoading: commentLoading} = useAddComment ({postID})
+  const {addComment, isLoading: commentLoading} = useAddComment (
+    {postID,
+     uid: user?.id,
+    })
   const navigate = useNavigate();
 
   function handleAddComment(data) {

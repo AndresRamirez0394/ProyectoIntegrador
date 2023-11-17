@@ -18,14 +18,31 @@ import {
   Switch,
 } from "@mui/material";
 import React from "react";
+import { useAuth } from "hooks/auth";
+import { useNavigate } from "react-router-dom";
+
 
 const Sidebar = ({mode,setMode}) => {
+  const navigate = useNavigate();
+  const {user, isLoading} = useAuth();
+  const navigateToProfile = () =>{ 
+    
+    navigate('/profile?matricula='+user?.matricula+'')
+
+  }
+
+  const navigateToFeed = () =>{
+    navigate('/App?matricula='+user?.matricula+'')
+  }
+
+
+
   return (
     <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
       <Box position="fixed">
         <List>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#home">
+            <ListItemButton component="a" onClick={navigateToFeed}>
               <ListItemIcon>
                 <Home />
               </ListItemIcon>
@@ -73,7 +90,7 @@ const Sidebar = ({mode,setMode}) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component="a" onClick={navigateToProfile}>
               <ListItemIcon>
                 <AccountBox />
               </ListItemIcon>
