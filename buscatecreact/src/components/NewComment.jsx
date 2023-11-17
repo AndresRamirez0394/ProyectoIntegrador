@@ -3,7 +3,7 @@ import { useAuth } from 'hooks/auth';
 import AvatarLink from './Avatar';
 import { useForm } from 'react-hook-form';
 import { useAddComment } from 'hooks/comments';
-import { VStack, Box, Input, Button} from "@chakra-ui/react";
+import {  Box, Input, Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 
@@ -25,8 +25,6 @@ export default function NewComment({post}) {
   }
 
   return (
-    <VStack align="center" justify="center" minHeight="10vh" padding="4">
-    <Button onClick={navigateToFeed}>Home</Button>
       <Box width="100%" maxWidth="600px">
         <AvatarLink user={user} size="md" />
         <form onSubmit={handleSubmit(handleAddComment)}>
@@ -52,6 +50,5 @@ export default function NewComment({post}) {
           </div>
         </form>
       </Box>
-    </VStack>
   );
 }

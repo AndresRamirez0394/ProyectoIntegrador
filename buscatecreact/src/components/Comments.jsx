@@ -3,6 +3,10 @@ import { useLocation } from "react-router-dom";
 import { usePost } from "hooks/posts";
 import { Box, Stack, Flex } from "@mui/material";
 import NewComment from "./NewComment";
+import CommentList from "./CommentList";
+import { collection, query, orderBy, where } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { db } from "lib/firebase";
 
 
 export default function Comments(){
@@ -18,6 +22,9 @@ export default function Comments(){
         <Box align="center" pt= "10" width="40%" >
             <Post post={post}/>
             <NewComment post = {post}/>
+            <CommentList post = {post} />
         </Box>
     );
 }
+
+

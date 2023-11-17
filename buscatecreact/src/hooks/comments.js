@@ -4,6 +4,8 @@ import { db } from "lib/firebase";
 import { useState } from "react";
 import { arrayRemove, arrayUnion } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { collection, query, orderBy, where } from "firebase/firestore";
 
 export async function GetComments(postId){
     const [isLoading, setLoading] = useState(false);
@@ -42,4 +44,12 @@ export function useAddComment({postID}){
         setLoading(false);
     }
     return {addComment, isLoading};
+}
+
+export function useComments(postID){
+    const q = query(collection(db, "comments"), where("postID", "==", postID));
+    const [comments, loading] = useCollectionData(q);
+    console.log("Comentarios", comments)
+
+    return {comments, loading};
 }
