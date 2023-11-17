@@ -17,14 +17,20 @@ import {
   ListItemText,
   Switch,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "hooks/auth";
 import { useNavigate } from "react-router-dom";
-
 
 const Sidebar = ({mode,setMode}) => {
   const navigate = useNavigate();
   const {user, isLoading} = useAuth();
+
+  if(isLoading) return "Loading..."
+  const navigateToFriends = () =>{ 
+    
+    navigate('/friends?matricula='+user?.matricula+'')
+
+  }
   const navigateToProfile = () =>{ 
     
     navigate('/profile?matricula='+user?.matricula+'')
@@ -74,7 +80,7 @@ const Sidebar = ({mode,setMode}) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component="a" onClick={navigateToFriends}>
               <ListItemIcon>
                 <Person />
               </ListItemIcon>

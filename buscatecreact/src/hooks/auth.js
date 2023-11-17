@@ -98,7 +98,7 @@ export function useRegister(){
                 date: Date.now(),
                 email: email,
                 post: [],
-                friends: [],
+                friends: [res.user.uid],
                 fullname: name,
                 address: "",
                 mobile: "",

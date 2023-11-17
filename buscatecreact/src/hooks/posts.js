@@ -96,3 +96,32 @@ export function DeletePost (id){
 
     return {deletePost, isLoading};
 }
+
+export  function GetUserPost(id){
+    const [isLoading, setLoading] = useState(false);
+    const [getPost, setPost] = useState([]);
+    console.log(id);
+    setLoading(true);
+    /*
+    setLoading(true);
+    const q = query(collection(db, "Post"), where("owner", "==", id));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+        console.log("No documents found.");
+        setLoading(false);
+        return;
+    } else 
+    {
+    querySnapshot.forEach((doc) => {
+        setPost(doc.data());
+    });
+    }
+     */
+    setPost(0);
+    setLoading(false);
+
+
+
+
+    return {getPost, isLoading};
+}
