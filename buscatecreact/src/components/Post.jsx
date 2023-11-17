@@ -28,6 +28,7 @@ import { useComments } from "hooks/comments";
 import { useAddFriend } from "hooks/friends";
 import { useUser } from "hooks/useUser";
 
+
 export default function Post ({post}){
   const {txtValue} = post;
   const [anchorEl, setAnchorEl] = React.useState(null);

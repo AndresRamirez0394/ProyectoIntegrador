@@ -29,6 +29,8 @@ import { doc, setDoc } from "@firebase/firestore";
 import { v4 } from "uuid";
 import './add.css';	
 import { uploadBytes, ref, getDownloadURL } from "@firebase/storage";
+import { getAnalytics, logEvent } from "firebase/analytics";
+
 
 
 const SytledModal = styled(Modal)({
@@ -47,6 +49,7 @@ const UserBox = styled(Box)({
 
 
 const Add = () => {
+  const analytics = getAnalytics();
   const [open, setOpen] = useState(false);
   const {user, isLoading} = useAuth();
   const [image, setImage] = useState(""); //image state
@@ -58,7 +61,7 @@ const Add = () => {
   }
 
   const handleUpload = (e) => {
-    console.log(e.target.files[0]);
+    
     const imgs = ref(storage, `Images/${v4()}`);
     uploadBytes (imgs, e.target.files[0]).then((data) => {
       console.log(data, 'imgs');
@@ -84,6 +87,10 @@ const Add = () => {
       likes: [],
     });
     setImage("");
+    logEvent(analytics, 'share', {
+      text: text,
+      uid: user?.id,
+    });
     alert("Post created");
 
   }

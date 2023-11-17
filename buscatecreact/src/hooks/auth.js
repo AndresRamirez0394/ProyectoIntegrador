@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import {setDoc, doc, getDoc} from "firebase/firestore"
 import IsmatriculaExists from 'utils/userExist';
-import { async } from 'q';
+
 
 export function useAuth() {
     const [authUser, authLoading, error] = useAuthState(auth);

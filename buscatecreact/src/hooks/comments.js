@@ -6,6 +6,10 @@ import { arrayRemove, arrayUnion, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, query, orderBy, where } from "firebase/firestore";
+import { getAnalytics, logEvent } from "firebase/analytics";
+
+const analytics = getAnalytics();
+
 
 export async function GetComments(postId){
     const [isLoading, setLoading] = useState(false);
@@ -34,6 +38,8 @@ export function useAddComment({postID, uid}){
         const date = Date.now();
         const docRef = doc(db, "comments", id);
         await setDoc(docRef, {text, id, postID, date, uid})
+
+        logEvent(analytics, 'notification_received');
 
         toast('Comentario Agregado', {
             position: "top-center",

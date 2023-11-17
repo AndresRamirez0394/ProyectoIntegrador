@@ -6,8 +6,8 @@ import { useAddComment } from 'hooks/comments';
 import {  Box, Input, Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-
 export default function NewComment({post}) {
+
   const {id: postID} = post;
   const {user, isLoading} = useAuth();
   const {register, handleSubmit, reset} = useForm();
@@ -18,7 +18,6 @@ export default function NewComment({post}) {
   const navigate = useNavigate();
 
   function handleAddComment(data) {
-    console.log(data);
     addComment(data.text)
     reset();
   }
