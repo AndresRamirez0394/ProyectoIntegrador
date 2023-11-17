@@ -68,6 +68,10 @@ const Navbar = () => {
 
   }
 
+  const navigateToFeed = () =>{
+    navigate('/App?matricula='+user?.matricula+'')
+  }
+
 
   const getUser = () => {
     const data = document.getElementById("search_field").value;
@@ -130,7 +134,8 @@ const Navbar = () => {
       </Menu>
       </div>
 
-        <Button onClick={(e) => getUser()}>Hola</Button>
+        <Button onClick={(e) => getUser()}>Buscar</Button>
+        <Button onClick={navigateToFeed}>Home</Button>
         <Icons>
           <Badge badgeContent={4} color="error">
             <Mail />

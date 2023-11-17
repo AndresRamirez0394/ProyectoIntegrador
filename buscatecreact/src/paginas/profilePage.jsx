@@ -71,6 +71,7 @@ export default function ProfilePage() {
       console.log("Document updated successfully");
       setEditName(updatedData.name);
       setEditedPhone(updatedData.PhoneNo);
+      setEditedEmail(updatedData.email);
       setEditMode(false);
     } catch (error){
       console.error("Error", error);
@@ -85,7 +86,6 @@ export default function ProfilePage() {
         <MDBCol lg="4">
           {editMode ? ( // Show edit fields when in edit mode
           <div>
-            {/* Input fields and "Save" button here */}
             <input
                 type="text"
                 value={editName}
