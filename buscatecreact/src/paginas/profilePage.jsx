@@ -36,7 +36,12 @@ export default function ProfilePage() {
   const [editMode, setEditMode] = useState(false);
   const [editName, setEditName] = useState(profile_data.name);
   const [editedPhone, setEditedPhone] = useState(profile_data.PhoneNo)
-  const {editedEmail, setEditedEmail} = useState(profile_data.email)
+  const [editedEmail, setEditedEmail] = useState(profile_data.email)
+  const [webDesignLevel, setWebDesignLevel] = useState(10);
+  const [softwareLevel, setSoftwareLevel] = useState(10);
+  const [mobileLevel, setMobileLevel] = useState(10);
+  const [frontLevel, setFrontLevel] = useState (10);
+  const [backLevel, setBackLevel] = useState (10);
 
   console.log("matricula a buscar" +  matricula);
   const isMe = user?.matricula === matricula;
@@ -63,6 +68,7 @@ export default function ProfilePage() {
     const updatedData = {
       name: editName,
       PhoneNo: editedPhone,
+      email: editedEmail,
     }
 
     const userRef = doc(db, "users", user?.id);
@@ -75,6 +81,20 @@ export default function ProfilePage() {
       setEditMode(false);
     } catch (error){
       console.error("Error", error);
+    }
+  };
+
+  const saveSkillLevel = async (skillName, level) => {
+    const updatedData = {
+      [skillName]: level,
+    };
+
+    const userRef = doc(db, "users", user?.id);
+    try {
+      await updateDoc(userRef, updatedData);
+      console.log("Skill level updated successfully");
+    } catch (error){
+      console.error("Error updating skill level", error);
     }
   };
 
@@ -216,17 +236,6 @@ export default function ProfilePage() {
                 </MDBCol>
               </MDBRow>
               <hr />
-              {/* Add other fields similarly */}
-              <MDBRow>
-                <MDBCol sm="3">
-                  <MDBCardText>Mobile</MDBCardText>
-                </MDBCol>
-                <MDBCol sm="9">
-                  <MDBCardText className="text-muted">
-                  </MDBCardText>
-                </MDBCol>
-              </MDBRow>
-              <hr />
               <MDBRow>
                 <MDBCol sm="3">
                   <MDBCardText>Address</MDBCardText>
@@ -245,31 +254,79 @@ export default function ProfilePage() {
                 <MDBCard className="mb-4 mb-md-0">
                   <MDBCardBody>
                     {/* ESTO SERA EDITABLE PARA QUE PONGAS TUS SKILLLS EN CADA UNA */}
-                    <MDBCardText className="mb-4"><span className="text-primary font-italic me-1">SKILLS </span> ESPICIALIZACION DE LA SKILL</MDBCardText>
+                    <MDBCardText className="mb-4"><span className="text-primary font-italic me-1">SKILLS </span> NIVEL DE PROEFICIENCIA</MDBCardText>
                     <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>Web Design</MDBCardText>
+                    <input
+                      type="number"
+                      min="1"
+                      max="20"
+                      value={webDesignLevel}
+                      onChange={(e) => setWebDesignLevel(parseInt(e.target.value, 10))}
+                    />
+
                     <MDBProgress className="rounded">
-                      <MDBProgressBar width={80} valuemin={0} valuemax={100} />
+                      <MDBProgressBar width={(webDesignLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
 
-                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Website Markup</MDBCardText>
+                    <button onClick={() => saveSkillLevel('webDesignLevel', webDesignLevel)}>Save</button>
+                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Desktop Software Developer</MDBCardText>
+                    <input
+                      type="number"
+                      min="1"
+                      max="20"
+                      value={softwareLevel}
+                      onChange={(e) => setSoftwareLevel(parseInt(e.target.value, 10))}
+                    />
+
                     <MDBProgress className="rounded">
-                      <MDBProgressBar width={72} valuemin={0} valuemax={100} />
+                      <MDBProgressBar width={(softwareLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
 
-                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>One Page</MDBCardText>
+                    <button onClick={() => saveSkillLevel('softwareLevel', softwareLevel)}>Save</button>
+                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Mobile Software Developer</MDBCardText>
+                    <input
+                      type="number"
+                      min="1"
+                      max="20"
+                      value={mobileLevel}
+                      onChange={(e) => setMobileLevel(parseInt(e.target.value, 10))}
+                    />
+
                     <MDBProgress className="rounded">
-                      <MDBProgressBar width={89} valuemin={0} valuemax={100} />
+                      <MDBProgressBar width={(mobileLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
 
-                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Mobile Template</MDBCardText>
+                    <button onClick={() => saveSkillLevel('mobileLevel', mobileLevel)}>Save</button>
+
+                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Frontend</MDBCardText>
+                    <input
+                      type="number"
+                      min="1"
+                      max="20"
+                      value={frontLevel}
+                      onChange={(e) => setFrontLevel(parseInt(e.target.value, 10))}
+                    />
+
                     <MDBProgress className="rounded">
-                      <MDBProgressBar width={55} valuemin={0} valuemax={100} />
+                      <MDBProgressBar width={(frontLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
 
-                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Backend API</MDBCardText>
+                    <button onClick={() => saveSkillLevel('frontLevel', frontLevel)}>Save</button>
+
+                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Backend</MDBCardText>
+                    <input
+                      type="number"
+                      min="1"
+                      max="20"
+                      value={backLevel}
+                      onChange={(e) => setBackLevel(parseInt(e.target.value, 10))}
+                    />
+
                     <MDBProgress className="rounded">
-                      <MDBProgressBar width={66} valuemin={0} valuemax={100} />
+                      <MDBProgressBar width={(backLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
+
+                    <button onClick={() => saveSkillLevel('backLevel', backLevel)}>Save</button>
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>
