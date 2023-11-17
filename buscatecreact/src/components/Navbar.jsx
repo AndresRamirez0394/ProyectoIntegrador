@@ -8,10 +8,14 @@ import {
   InputBase,
   Menu,
   MenuItem,
+  Select,
   styled,
   Toolbar,
   Typography,
+  OutlinedInput,
 } from "@mui/material";
+import Autocomplete from '@mui/lab/Autocomplete';
+import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import {useAuth, useLogout} from "hooks/auth"
 import { useNavigate } from "react-router-dom";
@@ -19,7 +23,7 @@ import { Button } from "@mui/base";
 import { GetUser } from "hooks/search";
 import { db } from "lib/firebase";
 import { collection, getDocs } from "firebase/firestore"; 
-import { createPopper } from '@popperjs/core';
+
 
 
 const StyledToolbar = styled(Toolbar)({
@@ -53,13 +57,20 @@ const UserBox = styled(Box)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  
+  const [foundUser, setFoundUser] = useState(null);
   const {logout, isLog} = useLogout();
   const [open, setOpen] = useState(false);
   const [area_open, setAreaOpen] = useState(false);
   const {user, isLoading} = useAuth();
   const [area, setArea] = useState("");
   const navigate = useNavigate();
+  const [matriculas, setMatriculas] = useState([]);
+  const [names, setNames] = useState([]);
+  const [webDesignLevel, setWebDesignLevel] = useState([]);
+  const [backLevel, setBackLevel] = useState([]);
+  const [frontLevel, setFrontLevel] = useState([]);
+  const [searchCriteria, setSearchCriteria] = useState("matricula");
+
 
   if(isLoading) return "Loading..."
 
@@ -69,27 +80,51 @@ const Navbar = () => {
 
   }
 
+  const navigateUserProfile = () =>{
+    navigate('/profile?matricula='+foundUser.matricula+'')
+  }
+
   const navigateToFeed = () =>{
     navigate('/App?matricula='+user?.matricula+'')
   }
 
 
-  const getUser = () => {
-    const data = document.getElementById("search_field").value;
-    console.log("matricula " +  data);
+  const getUser = (event, newValue) => {
+    const data = newValue?.toLowerCase();
     const getFromFirebase = collection(db,"users");
-    
 
     getDocs(getFromFirebase).then((querySnapshot) => {
+      const optionsList = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.data().matricula);
-        if(doc.data().matricula.toLowerCase() === data.toLowerCase()){
-          console.log("encontrado" + doc.data().matricula);
-        }
-      });
-    });
-    console.log("datos");
+        const option = doc.data()[searchCriteria]?.toLowerCase();
 
+        if(option !== undefined){
+        optionsList.push(option);
+
+        switch (searchCriteria){
+        case 'matricula':
+          setMatriculas(optionsList);
+          break;
+        case 'name':
+          setNames(optionsList);
+          break;
+        case 'webDesignLevel':
+          setWebDesignLevel(optionsList);
+          break;
+        case 'backLevel':
+          setBackLevel(optionsList);
+          break;
+        case 'frontLevel':
+          setFrontLevel(optionsList);
+          break;
+        }
+      }
+        if (option === data) {
+          console.log(`Found ${searchCriteria}: ${doc.data()[searchCriteria]}`);
+          setFoundUser(doc.data());
+        }
+      })
+    });
   }
 
 
@@ -104,17 +139,54 @@ const Navbar = () => {
         </Typography>
         </IconButton>
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
-        <Search >
-          <InputBase id= "search_field" placeholder="search..." />
-          <IconButton 
-         onClick={(e) => setAreaOpen(true)}>
-        <Typography >Tipo de Busqueda</Typography> 
-        </IconButton>
-        </Search>
+        <Autocomplete
+          options={searchCriteria === 'matricula' ? matriculas : searchCriteria === 'name' ? names : 
+          searchCriteria === 'webDesignLevel' ? webDesignLevel :
+          searchCriteria === 'frontLevel' ? frontLevel :
+          searchCriteria === 'backLevel' ? backLevel : []
+          }
+          getOptionLabel={(option) => option}
+          renderInput={(params) => (
+            <div>
+            <Select
+             value={searchCriteria}
+             onChange={(e) => setSearchCriteria(e.target.value)}
+             displayEmpty
+             input={<OutlinedInput label="Search Criteria" />}
+             sx={{ marginLeft: 2 }}
+          >
+          <MenuItem value="matricula">Matricula</MenuItem>
+          <MenuItem value="name">Name</MenuItem>
+          <MenuItem value="webDesignLevel">Web Design Skills</MenuItem>
+          <MenuItem value="backLevel">Backend Skills</MenuItem>
+          <MenuItem value="frontLevel">Frontend Skills</MenuItem>
+          <MenuItem value="mobileLevel">Mobile Development Skills</MenuItem>
+          </Select>
+            <TextField
+              {...params}
+              id="search_field"
+              placeholder={`Search by ${searchCriteria.charAt(0).toUpperCase() + searchCriteria.slice(1)}`}
+              sx={{width: '500px'}}
+            />
+            </div>
+          )}
+          onInputChange={(event, newValue) => {
+            setFoundUser(null);
+            getUser(newValue);
+          }}
+          />
+
+          {foundUser && (
+      <section style={{ backgroundColor: '#eee'}}>
+            <p>
+              Found User:
+              <button onClick={navigateUserProfile}>
+              {foundUser.matricula} - {foundUser.name}
+              </button>
+            </p>
+      </section>
+    )}
         <div>
-        <p >
-        
-        </p>
         <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
@@ -174,6 +246,11 @@ const Navbar = () => {
         <MenuItem>My account</MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
+      {foundUser && (
+        <section style={{backgroundColor: '#eee'}}>
+
+        </section>
+      )}
     </AppBar>
   );
 };
