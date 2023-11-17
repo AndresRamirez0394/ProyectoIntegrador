@@ -43,12 +43,32 @@ export default function ProfilePage() {
   const [frontLevel, setFrontLevel] = useState (10);
   const [backLevel, setBackLevel] = useState (10);
 
+  const [experience1Title, setExperience1Title] = useState('');
+  const [experience1Description, setExperience1Description] = useState('');
+
+  const [experience2Title, setExperience2Title] = useState('');
+  const [experience2Description, setExperience2Description] = useState('');
+
+  const [experience3Title, setExperience3Title] = useState('');
+  const [experience3Description, setExperience3Description] = useState('');
+
+  const [experience4Title, setExperience4Title] = useState('');
+  const [experience4Description, setExperience4Description] = useState('');
+
+  const [isEditingExperience, setIsEditingExperience] = useState(false);
+
+  const saveExperience = () => {
+    setIsEditingExperience(false);
+  }
+
   console.log("matricula a buscar" +  matricula);
   const isMe = user?.matricula === matricula;
   
   useEffect(() => {
     getUser();
   },[])
+
+  const [isEditingSkills, setIsEditingSkills] = useState(false);
 
   const getUser = () => {
     const getFromFirebase = collection(db,"users");
@@ -125,7 +145,9 @@ export default function ProfilePage() {
           </div>
           ) : (
             <div>
+            {isMe && (
             <MDBBtn onClick={() => setEditMode(true)}>Edit Profile</MDBBtn>
+            )}
             <MDBCard className="mb-4">
               <MDBCardBody className="text-center">
                 <MDBCardImage
@@ -256,6 +278,7 @@ export default function ProfilePage() {
                     {/* ESTO SERA EDITABLE PARA QUE PONGAS TUS SKILLLS EN CADA UNA */}
                     <MDBCardText className="mb-4"><span className="text-primary font-italic me-1">SKILLS </span> NIVEL DE PROEFICIENCIA</MDBCardText>
                     <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>Web Design</MDBCardText>
+                    {isMe && (
                     <input
                       type="number"
                       min="1"
@@ -263,13 +286,15 @@ export default function ProfilePage() {
                       value={webDesignLevel}
                       onChange={(e) => setWebDesignLevel(parseInt(e.target.value, 10))}
                     />
-
+                    )}
                     <MDBProgress className="rounded">
                       <MDBProgressBar width={(webDesignLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
-
+                      {isMe && (
                     <button onClick={() => saveSkillLevel('webDesignLevel', webDesignLevel)}>Save</button>
+                    )}
                     <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Desktop Software Developer</MDBCardText>
+                    {isMe && (
                     <input
                       type="number"
                       min="1"
@@ -277,13 +302,16 @@ export default function ProfilePage() {
                       value={softwareLevel}
                       onChange={(e) => setSoftwareLevel(parseInt(e.target.value, 10))}
                     />
+                    )}
 
                     <MDBProgress className="rounded">
                       <MDBProgressBar width={(softwareLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
-
+                    {isMe && (
                     <button onClick={() => saveSkillLevel('softwareLevel', softwareLevel)}>Save</button>
+                    )}
                     <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Mobile Software Developer</MDBCardText>
+                    {isMe && (
                     <input
                       type="number"
                       min="1"
@@ -291,14 +319,15 @@ export default function ProfilePage() {
                       value={mobileLevel}
                       onChange={(e) => setMobileLevel(parseInt(e.target.value, 10))}
                     />
-
+                    )}
                     <MDBProgress className="rounded">
                       <MDBProgressBar width={(mobileLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
-
+                    {isMe && (
                     <button onClick={() => saveSkillLevel('mobileLevel', mobileLevel)}>Save</button>
-
+                    )}
                     <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Frontend</MDBCardText>
+                    {isMe && (
                     <input
                       type="number"
                       min="1"
@@ -306,14 +335,16 @@ export default function ProfilePage() {
                       value={frontLevel}
                       onChange={(e) => setFrontLevel(parseInt(e.target.value, 10))}
                     />
+                    )}
 
                     <MDBProgress className="rounded">
                       <MDBProgressBar width={(frontLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
-
+                    {isMe && (
                     <button onClick={() => saveSkillLevel('frontLevel', frontLevel)}>Save</button>
-
+                    )}
                     <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Backend</MDBCardText>
+                    {isMe && (
                     <input
                       type="number"
                       min="1"
@@ -321,12 +352,13 @@ export default function ProfilePage() {
                       value={backLevel}
                       onChange={(e) => setBackLevel(parseInt(e.target.value, 10))}
                     />
-
+                    )}
                     <MDBProgress className="rounded">
                       <MDBProgressBar width={(backLevel / 20) * 100} valuemin={0} valuemax={100} />
                     </MDBProgress>
-
+                    {isMe && (
                     <button onClick={() => saveSkillLevel('backLevel', backLevel)}>Save</button>
+                    )}
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>
@@ -334,31 +366,48 @@ export default function ProfilePage() {
               <MDBCol md="6">
                 <MDBCard className="mb-4 mb-md-0">
                   <MDBCardBody>
-                    <MDBCardText className="mb-4"><span className="text-primary font-italic me-1">assigment</span> Project Status</MDBCardText>
-                    <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>Web Design</MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={80} valuemin={0} valuemax={100} />
-                    </MDBProgress>
+                    <MDBCardText className="mb-4"><span className="text-primary font-italic me-1">EXPERIENCIA</span> Proyectos Anteriores</MDBCardText>
+                    {(isEditingExperience || isMe) && (
+                      <>
+                    <ExperienceInputField
+                      title={experience1Title}
+                      setTitle={setExperience1Title}
+                      description={experience1Description}
+                      setDescription={setExperience1Description}
+                    />
 
-                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Website Markup</MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={72} valuemin={0} valuemax={100} />
-                    </MDBProgress>
+                    <ExperienceInputField
+                      title={experience2Title}
+                      setTitle={setExperience2Title}
+                      description={experience2Description}
+                      setDescription={setExperience2Description}
+                    />
 
-                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>One Page</MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={89} valuemin={0} valuemax={100} />
-                    </MDBProgress>
+                    <ExperienceInputField
+                      title={experience3Title}
+                      setTitle={setExperience3Title}
+                      description={experience3Description}
+                      setDescription={setExperience3Description}
+                    />
 
-                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Mobile Template</MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={55} valuemin={0} valuemax={100} />
-                    </MDBProgress>
+                    <ExperienceInputField
+                      title={experience4Title}
+                      setTitle={setExperience4Title}
+                      description={experience4Description}
+                      setDescription={setExperience4Description}
+                    />
 
-                    <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Backend API</MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={66} valuemin={0} valuemax={100} />
-                    </MDBProgress>
+                    {/* Display "Save" button for previous experience */}
+                    {isEditingExperience && (
+                      <MDBBtn onClick={saveExperience}>Save Experience</MDBBtn>
+                    )}
+                  </>
+                )}
+                {isMe && !isEditingExperience && (
+                  <MDBBtn onClick={() => setIsEditingExperience(true)}>
+                    Edit Experience
+                  </MDBBtn>
+                )}
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>
@@ -369,3 +418,23 @@ export default function ProfilePage() {
     </section>
   );
 }
+const ExperienceInputField = ({ title, setTitle, description, setDescription }) => (
+  <>
+    <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>
+      Title
+    </MDBCardText>
+    <input
+      type="text"
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+    />
+
+    <MDBCardText className="mb-1 mt-2" style={{ fontSize: '.77rem' }}>
+      Description
+    </MDBCardText>
+    <textarea
+      value={description}
+      onChange={(e) => setDescription(e.target.value)}
+    />
+  </>
+);
