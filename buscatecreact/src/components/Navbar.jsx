@@ -4,6 +4,8 @@ import {
   Avatar,
   Badge,
   Box,
+  IconButton,
+  InputBase,
   Menu,
   MenuItem,
   Select,
@@ -62,8 +64,8 @@ const Navbar = () => {
   const {user, isLoading} = useAuth();
   const [area, setArea] = useState("");
   const navigate = useNavigate();
-  const [matriculas, setMatriculas] = useState([]);
-  const [names, setNames] = useState([]);
+  const [matricula, setMatricula] = useState([]);
+  const [name, setNames] = useState([]);
   const [webDesignLevel, setWebDesignLevel] = useState([]);
   const [backLevel, setBackLevel] = useState([]);
   const [frontLevel, setFrontLevel] = useState([]);
@@ -79,7 +81,7 @@ const Navbar = () => {
   }
 
   const navigateUserProfile = () =>{
-    navigate('/profile?matricula='+foundUser.matricula+'')
+    navigate('/profile?matricula='+user?.matricula+'')
   }
 
   const navigateToFeed = () =>{
@@ -87,10 +89,12 @@ const Navbar = () => {
   }
 
 
-  const getUser = (event, newValue) => {
+  const getUser = async (event, newValue) => {
     const data = newValue?.toLowerCase();
     const getFromFirebase = collection(db,"users");
 
+
+    try {
     getDocs(getFromFirebase).then((querySnapshot) => {
       const optionsList = [];
       querySnapshot.forEach((doc) => {
@@ -98,10 +102,10 @@ const Navbar = () => {
 
         if(option !== undefined){
         optionsList.push(option);
-
+        console.log("lista" + optionsList)
         switch (searchCriteria){
         case 'matricula':
-          setMatriculas(optionsList);
+          setMatricula(optionsList);
           break;
         case 'name':
           setNames(optionsList);
@@ -117,24 +121,38 @@ const Navbar = () => {
           break;
         }
       }
-        if (option === data) {
+        if (option === data ) {
+          querySnapshot.forEach((doc) => {
+            console.log(doc.data().searchCriteria )
+            if (doc.data().searchCriteria?.toLowerCase() === data)
+              setFoundUser(doc.data())
+          })
+
           console.log(`Found ${searchCriteria}: ${doc.data()[searchCriteria]}`);
-          setFoundUser(doc.data());
+          console.log(doc.data())
+          
         }
       })
     });
+  } catch (error) {
+    console.error('Error', error);
+  }
   }
 
 
   return (
     <AppBar position="sticky">
       <StyledToolbar>
-        <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
+        <IconButton
+         onClick= { navigateToFeed}
+         >
+        <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } , color: "white" }}>
           {user?.matricula.toUpperCase()  }
         </Typography>
+        </IconButton>
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
         <Autocomplete
-          options={searchCriteria === 'matricula' ? matriculas : searchCriteria === 'name' ? names : 
+          options={searchCriteria === 'matricula' ? matricula : searchCriteria === 'name' ? name : 
           searchCriteria === 'webDesignLevel' ? webDesignLevel :
           searchCriteria === 'frontLevel' ? frontLevel :
           searchCriteria === 'backLevel' ? backLevel : []
@@ -201,7 +219,6 @@ const Navbar = () => {
       </div>
 
         <Button onClick={(e) => getUser()}>Buscar</Button>
-        <Button onClick={navigateToFeed}>Home</Button>
         <Icons>
           <Badge badgeContent={4} color="error">
             <Mail />
