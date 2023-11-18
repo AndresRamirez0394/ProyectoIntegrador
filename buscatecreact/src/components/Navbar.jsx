@@ -70,6 +70,8 @@ const Navbar = () => {
   const [backLevel, setBackLevel] = useState([]);
   const [frontLevel, setFrontLevel] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState("matricula");
+  const [searchValue, setSearchValue] = useState("");
+  const [showResult, setShowResult] = useState(false);
 
 
   if(isLoading) return "Loading..."
@@ -139,6 +141,27 @@ const Navbar = () => {
   }
   }
 
+  function getText(value){
+    return value
+  }
+
+  async function GetData(criteria, value){
+    const getFromFirebase = collection(db,"users");
+    const search = criteria.toLowerCase();
+    const querySnapshot = await getDocs(getFromFirebase);
+    var searchResult = "";
+    console.log(criteria, value)
+    querySnapshot.forEach((doc) => {
+      searchResult = getText(doc.data()[criteria])
+      console.log(searchResult + "  " + value )
+      if (searchResult?.toLowerCase() === value){
+        setFoundUser(doc.data())
+        console.log(doc.data())
+        
+      }
+    })
+  }
+
 
   return (
     <AppBar position="sticky">
@@ -185,19 +208,18 @@ const Navbar = () => {
           onInputChange={(event, newValue) => {
             setFoundUser(null);
             getUser(newValue);
+            setShowResult(false);
+            setSearchValue(newValue)
           }}
           />
-
-          {foundUser && (
-      <section style={{ backgroundColor: '#eee'}}>
-            <p>
-              Found User:
-              <button onClick={navigateUserProfile}>
-              {foundUser.matricula} - {foundUser.name}
-              </button>
-            </p>
-      </section>
-    )}
+          {showResult? 
+                    <p>
+                      <button onClick={navigateUserProfile}>
+                      {foundUser.matricula} - {foundUser.name}
+                      </button>
+                    </p>
+            : null
+          }
         <div>
         <Menu
         id="demo-positioned-menu"
@@ -218,7 +240,7 @@ const Navbar = () => {
       </Menu>
       </div>
 
-        <Button onClick={(e) => getUser()}>Buscar</Button>
+        <Button onClick={(e) => GetData(searchCriteria, searchValue) && setShowResult(true)}>Buscar</Button>
         <Icons>
           <Badge badgeContent={4} color="error">
             <Mail />
@@ -258,7 +280,8 @@ const Navbar = () => {
         <MenuItem>My account</MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
-      {foundUser && (
+      
+      {foundUser &&  (
         <section style={{backgroundColor: '#eee'}}>
 
         </section>
