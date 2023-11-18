@@ -62,10 +62,10 @@ export function useLogin(){
 export function useRegister(){
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
-
+    
     async function register({ matricula, email, password, name}) {
         setLoading(true);
-
+        console.log (email, password, name, matricula);
         let emailcheck = email.split("@");
         if (emailcheck[1] !== "tec.mx"){
             toast('Es necesario un correo Tec', {
@@ -90,16 +90,14 @@ export function useRegister(){
             setLoading(false);
         } else {
             try{
+
                 const res = await createUserWithEmailAndPassword(auth, email, password);
 
               await setDoc(doc(db, "users", res.user.uid), {
                 id: res.user.uid,
-                matricula: matricula.toLowerCase(),
-                date: Date.now(),
+                matricula: matricula,
                 email: email,
-                post: [],
                 friends: [res.user.uid],
-                fullname: name,
                 address: "",
                 mobile: "",
                 career: "",

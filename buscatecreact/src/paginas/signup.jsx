@@ -17,7 +17,7 @@ export default function Signupform() {
       matricula: data.matricula,
       email: data.email,
       password: data.password,
-      name: data.name,
+      name: data.nombre,
     });
     if (succeeded) {
       toast('You are now logged in', {
